@@ -113,7 +113,7 @@ export class HrDocuments implements OnInit {
   }
 
   viewDoc(url: string) {
-    window.open('https://ees-backend-production.up.railway.app/uploads/' + url, '_blank');
+    window.open('http://localhost:5000/uploads/' + url, '_blank');
   }
 
   openReview(doc: any, action: string) {

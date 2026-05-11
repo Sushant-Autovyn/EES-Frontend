@@ -35,7 +35,7 @@ export class Roles implements OnInit {
   permissionOptions = ['dashboard', 'employees', 'attendance', 'leaves', 'payroll', 'roles', 'calendar', 'team-members', 'salary-records', 'payslip', 'attendance-salary', 'financial-reports', 'reimbursements', 'hr-onboarding', 'hr-recruitment', 'hr-documents', 'hr-reports', 'hr-departments', 'user-management', 'system-settings', 'announcements', 'audit-logs', 'backup-recovery', 'admin-reports', 'branch-management', 'my-documents'];
   selectedPermissions: string[] = [];
 
-  private apiUrl = 'https://ees-backend-production.up.railway.app/api/roles';
+  private apiUrl = 'http://localhost:5000/api/roles';
 
   constructor(
     private http: HttpClient,

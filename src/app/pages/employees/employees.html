@@ -72,7 +72,7 @@
             <td>{{emp.id}}</td>
             <td>
               <div class="emp-name">
-                <img *ngIf="emp.profile_image" [src]="'https://ees-backend-production.up.railway.app/uploads/' + emp.profile_image" class="emp-avatar">
+                <img *ngIf="emp.profile_image" [src]="'http://localhost:5000/uploads/' + emp.profile_image" class="emp-avatar">
                 <span>{{emp.name}}</span>
               </div>
             </td>

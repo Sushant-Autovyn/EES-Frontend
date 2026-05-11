@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class Payroll {
 
-  apiUrl = 'https://ees-backend-production.up.railway.app/api/payroll';
+  apiUrl = 'http://localhost:5000/api/payroll';
 
   constructor(private http: HttpClient) {}
 

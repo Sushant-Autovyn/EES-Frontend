@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class BackupService {
-  private apiUrl = 'https://ees-backend-production.up.railway.app/api/backup';
+  private apiUrl = 'http://localhost:5000/api/backup';
   constructor(private http: HttpClient) {}
 
   getInfo() { return this.http.get(`${this.apiUrl}/info`); }

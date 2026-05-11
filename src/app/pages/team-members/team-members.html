@@ -16,7 +16,7 @@
     <div class="members-grid">
       <div class="member-card" *ngFor="let m of filteredMembers">
         <div class="member-avatar">
-          <img *ngIf="m.profile_image" [src]="'https://ees-backend-production.up.railway.app/uploads/' + m.profile_image" alt="">
+          <img *ngIf="m.profile_image" [src]="'http://localhost:5000/uploads/' + m.profile_image" alt="">
           <span *ngIf="!m.profile_image" class="avatar-placeholder">{{ m.name?.charAt(0) }}</span>
         </div>
         <div class="member-info">
