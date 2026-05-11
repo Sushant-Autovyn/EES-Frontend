@@ -1,0 +1,138 @@
+<app-sidebar></app-sidebar>
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+
+    <div class="page-header">
+      <h1><i class="fas fa-file-invoice"></i> Payslip Generation</h1>
+    </div>
+
+    <!-- PAYSLIP LIST -->
+    <div class="payslip-list" *ngIf="!showPayslip">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Department</th>
+              <th>Month</th>
+              <th>Net Salary</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of payrollRecords">
+              <td class="emp-cell">
+                <div class="emp-avatar">{{r.name?.charAt(0)}}</div>
+                <span>{{r.name}}</span>
+              </td>
+              <td>{{r.department}}</td>
+              <td>{{getMonthName(r.month)}} {{r.year}}</td>
+              <td class="amount-cell">&#8377;{{r.net_salary | number:'1.2-2'}}</td>
+              <td><span class="status-badge paid">Paid</span></td>
+              <td>
+                <button class="view-btn" (click)="viewPayslip(r)"><i class="fas fa-eye"></i> View Payslip</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="no-data" *ngIf="payrollRecords.length === 0">
+        No paid payroll records found. Process payments first from Payroll Management.
+      </div>
+    </div>
+
+    <!-- PAYSLIP DETAIL -->
+    <div class="payslip-view" *ngIf="showPayslip && selectedPayslip">
+      <div class="payslip-actions">
+        <button class="back-btn" (click)="closePayslip()">&#8592; Back to List</button>
+        <button class="download-btn" (click)="downloadPDF()"><i class="fas fa-download"></i> Download PDF</button>
+      </div>
+
+      <div class="payslip-doc" id="payslip-print">
+        <div class="payslip-header">
+          <div>
+            <div class="company-name">AUTOVYN</div>
+            <div class="payslip-label">Payslip for {{getMonthName(selectedPayslip.month)}} {{selectedPayslip.year}}</div>
+          </div>
+          <div class="payslip-id">&#35;{{selectedPayslip.id}}</div>
+        </div>
+
+        <div class="emp-details">
+          <div class="detail-item"><strong>Name:</strong> {{selectedPayslip.name}}</div>
+          <div class="detail-item"><strong>Employee ID:</strong> {{selectedPayslip.employee_id}}</div>
+          <div class="detail-item"><strong>Department:</strong> {{selectedPayslip.department}}</div>
+          <div class="detail-item"><strong>Designation:</strong> {{selectedPayslip.designation}}</div>
+          <div class="detail-item"><strong>Email:</strong> {{selectedPayslip.email}}</div>
+          <div class="detail-item"><strong>Payment Date:</strong> {{selectedPayslip.payment_date | date:'mediumDate'}}</div>
+        </div>
+
+        <div class="payslip-body">
+          <table class="salary-table">
+            <thead>
+              <tr>
+                <th>Earnings</th>
+                <th style="text-align:right">Amount</th>
+                <th>Deductions</th>
+                <th style="text-align:right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Basic Salary</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.basic_salary | number:'1.2-2'}}</td>
+                <td>Provident Fund</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.pf_deduction | number:'1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>HRA</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.hra | number:'1.2-2'}}</td>
+                <td>Tax Deduction</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.tax_deduction | number:'1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>DA</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.da | number:'1.2-2'}}</td>
+                <td>Insurance</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.insurance | number:'1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>TA</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.ta | number:'1.2-2'}}</td>
+                <td>Other</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.other_deductions | number:'1.2-2'}}</td>
+              </tr>
+              <tr>
+                <td>Bonus</td>
+                <td style="text-align:right">&#8377;{{selectedPayslip.bonus | number:'1.2-2'}}</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="total-row">
+                <td><strong>Gross Salary</strong></td>
+                <td style="text-align:right"><strong>&#8377;{{selectedPayslip.gross_salary | number:'1.2-2'}}</strong></td>
+                <td><strong>Total Deductions</strong></td>
+                <td style="text-align:right;color:#ef4444"><strong>&#8377;{{selectedPayslip.total_deductions | number:'1.2-2'}}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="net-salary-bar">
+            <span>Net Salary</span>
+            <span class="net-amount">&#8377;{{selectedPayslip.net_salary | number:'1.2-2'}}</span>
+          </div>
+        </div>
+
+        <div class="payslip-footer">
+          <div class="attendance-info">
+            <span>Working Days: <strong>{{selectedPayslip.working_days}}</strong></span>
+            <span>Present: <strong>{{selectedPayslip.present_days}}</strong></span>
+            <span>Leaves: <strong>{{selectedPayslip.leave_days}}</strong></span>
+          </div>
+          <p class="disclaimer">This is a system generated payslip and does not require signature.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+
+  <app-navbar></app-navbar>
+
+  <div class="content">
+
+    <div class="page-header">
+      <h1>My Calendar</h1>
+    </div>
+
+    <!-- Timing Info -->
+    <div class="timing-info">
+      <div class="timing-card">
+        <span class="timing-icon">&#9200;</span>
+        <div>
+          <strong>Reporting Time</strong>
+          <p>{{ reportingTime }}</p>
+        </div>
+      </div>
+      <div class="timing-card">
+        <span class="timing-icon"><i class="fas fa-moon"></i></span>
+        <div>
+          <strong>Checkout Time</strong>
+          <p>{{ checkoutTime }}</p>
+        </div>
+      </div>
+      <div class="timing-card today-card">
+        <span class="timing-icon"><i class="fas fa-calendar-day"></i></span>
+        <div>
+          <strong>Today's Status</strong>
+          <p *ngIf="!todayStatus">Not checked in</p>
+          <p *ngIf="todayStatus && !todayStatus.check_out" class="status-in">Checked In</p>
+          <p *ngIf="todayStatus && todayStatus.check_out" class="status-done">Completed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <button class="cal-nav" (click)="prevMonth()">&#9664;</button>
+        <h3>{{ getMonthName() }} {{ calendarYear }}</h3>
+        <button class="cal-nav" (click)="nextMonth()">&#9654;</button>
+      </div>
+
+      <div class="calendar-legend">
+        <span class="legend-item"><span class="legend-dot present"></span> Present</span>
+        <span class="legend-item"><span class="legend-dot absent"></span> Absent</span>
+        <span class="legend-item"><span class="legend-dot missed"></span> Missed</span>
+        <span class="legend-item"><span class="legend-dot checked-in"></span> Checked In</span>
+        <span class="legend-item"><span class="legend-dot weekend"></span> Weekend</span>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="cal-day-header">Sun</div>
+        <div class="cal-day-header">Mon</div>
+        <div class="cal-day-header">Tue</div>
+        <div class="cal-day-header">Wed</div>
+        <div class="cal-day-header">Thu</div>
+        <div class="cal-day-header">Fri</div>
+        <div class="cal-day-header">Sat</div>
+
+        <div *ngFor="let cell of calendarDays"
+             class="cal-cell"
+             [class.present]="cell.status === 'present'"
+             [class.absent]="cell.status === 'absent'"
+             [class.missed]="cell.status === 'missed'"
+             [class.checked-in]="cell.status === 'checked-in'"
+             [class.weekend]="cell.status === 'weekend'"
+             [class.today]="cell.status === 'today'"
+             [class.empty]="!cell.day">
+          <span *ngIf="cell.day">{{ cell.day }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

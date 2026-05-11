@@ -1,0 +1,69 @@
+.main{margin-left:260px;background:#f8fafc;min-height:100vh;padding:10px 15px 15px;transition:margin-left .3s}
+.content{padding:30px;background:#fff;border-radius:16px;min-height:calc(100vh - 120px);box-shadow:0 4px 20px rgba(0,0,0,.04);margin-top:15px}
+.page-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:25px}
+.page-header h1{font-size:26px;font-weight:700;color:#0f172a}
+.add-btn{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.3);transition:transform .2s}
+.add-btn:hover{transform:translateY(-2px)}
+
+/* SUMMARY */
+.summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.summary-card{display:flex;align-items:center;gap:14px;padding:20px 22px;border-radius:14px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.04);transition:transform .2s}
+.summary-card:hover{transform:translateY(-3px)}
+.summary-card.approved{border-left:4px solid #10b981}
+.summary-card.pending{border-left:4px solid #f59e0b}
+.summary-card.rejected{border-left:4px solid #ef4444}
+.summary-card.total{border-left:4px solid #3b82f6}
+.summary-icon{font-size:28px}
+.summary-value{font-size:22px;font-weight:800;color:#0f172a}
+.summary-label{font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* FORM */
+.claim-form{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:28px;margin-bottom:24px}
+.claim-form h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:13px;font-weight:600;color:#475569}
+.form-group input,.form-group select,.form-group textarea{padding:11px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;background:#fff;font-family:inherit;resize:vertical}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.form-actions{display:flex;gap:12px;margin-top:18px}
+.submit-btn{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(16,185,129,.3)}
+.submit-btn:hover{transform:translateY(-2px)}
+.cancel-btn{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:none}
+.cancel-btn:hover{background:#e2e8f0}
+
+/* FILTER */
+.filter-bar{display:flex;gap:4px;background:#f1f5f9;padding:4px;border-radius:10px;width:fit-content;margin-bottom:22px}
+.filter-bar button{padding:8px 18px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;transition:all .2s;box-shadow:none}
+.filter-bar button.active{background:#fff;color:#2563eb;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.filter-bar button:hover:not(.active){color:#334155}
+
+/* CLAIMS LIST */
+.claims-list{display:flex;flex-direction:column;gap:14px}
+.claim-card{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border:1px solid #e2e8f0;border-radius:14px;background:#fff;transition:transform .2s,box-shadow .2s}
+.claim-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.claim-left{display:flex;gap:16px;align-items:flex-start;flex:1}
+.claim-avatar{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.claim-avatar.type-travel{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+.claim-avatar.type-medical{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.claim-avatar.type-food{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.claim-info h4{font-size:16px;font-weight:700;color:#0f172a;margin:0}
+.claim-by{font-size:13px;color:#64748b}
+.claim-desc{font-size:14px;color:#475569;margin:6px 0 0;line-height:1.4}
+.claim-date{font-size:12px;color:#94a3b8}
+.claim-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.claim-amount{font-size:20px;font-weight:800;color:#0f172a}
+
+.status-badge{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.status-badge.pending{background:#fef3c7;color:#92400e}
+.status-badge.approved{background:#d1fae5;color:#065f46}
+.status-badge.rejected{background:#fee2e2;color:#991b1b}
+
+.claim-actions{display:flex;gap:6px}
+.approve-btn{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,.3)}
+.reject-btn{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(239,68,68,.3)}
+
+.no-data{text-align:center;padding:60px 20px;color:#94a3b8;font-size:16px}
+
+@media(max-width:768px){.main{margin-left:0}.summary-row{grid-template-columns:repeat(2,1fr)}.claim-card{flex-direction:column;align-items:flex-start;gap:14px}.claim-right{align-items:flex-start;flex-direction:row;gap:12px}}
+@media(max-width:480px){.content{padding:20px}.summary-row{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}

@@ -1,0 +1,52 @@
+.header { padding: 20px 0; margin-bottom: 25px; }
+.header-content { display: flex; justify-content: space-between; align-items: center; }
+.header h1 { margin: 0 0 5px; font-size: 1.8rem; color: #0f172a; }
+.header p { margin: 0; color: #64748b; }
+.btn-add { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+.create-card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+.form-group label { font-size: 0.82rem; color: #666; margin-bottom: 5px; }
+.form-group input, .form-group textarea, .form-group select { padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #667eea; }
+.form-row { display: flex; gap: 15px; }
+.form-row .form-group { flex: 1; }
+.form-actions { display: flex; gap: 10px; }
+
+.announcements-list { display: flex; flex-direction: column; gap: 16px; }
+.announcement-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid #667eea; transition: all 0.2s; }
+.announcement-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.ann-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.priority-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.ann-header h3 { margin: 0; flex: 1; font-size: 1.1rem; color: #333; }
+.priority-badge { padding: 3px 10px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; }
+.ann-message { margin: 0 0 12px; color: #555; line-height: 1.6; }
+.ann-footer { display: flex; align-items: center; gap: 15px; }
+.ann-target { font-size: 0.8rem; color: #888; }
+.ann-target i { margin-right: 4px; }
+.ann-date { font-size: 0.78rem; color: #aaa; flex: 1; }
+
+.btn-sm { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.78rem; transition: all 0.2s; }
+.btn-sm.delete { background: #fce4ec; color: #e53935; }
+.btn-sm.delete:hover { background: #e53935; color: white; }
+.btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500; }
+.btn-save { background: #4caf50; color: white; }
+.btn-save i { margin-right: 6px; }
+.btn-cancel { background: #eee; color: #666; }
+
+.empty { text-align: center; padding: 60px; color: #aaa; }
+.empty i { font-size: 3rem; margin-bottom: 15px; display: block; }
+@media (max-width: 768px) {
+  .header-content { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .header h1 { font-size: 1.4rem; }
+  .form-row { flex-direction: column; }
+  .announcement-card { padding: 16px; }
+  .ann-footer { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .header h1 { font-size: 1.2rem; }
+  .create-card { padding: 16px; }
+  .form-actions { flex-direction: column; }
+  .form-actions .btn { width: 100%; }
+}

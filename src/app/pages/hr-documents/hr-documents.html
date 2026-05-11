@@ -1,0 +1,138 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <div class="header-content">
+      <div>
+        <h1>Employee Documents</h1>
+        <p>Upload and manage employee documentation</p>
+      </div>
+      <button class="btn btn-upload" (click)="showUpload = true">
+        <i class="fas fa-cloud-upload-alt"></i> Upload Document
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name or document..." class="search-input" />
+    <select [(ngModel)]="filterType" class="filter-select">
+      <option value="">All Types</option>
+      <option *ngFor="let t of docTypes" [value]="t">{{ t }}</option>
+    </select>
+    <select [(ngModel)]="filterStatus" class="filter-select">
+      <option value="">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  </div>
+
+  <!-- Pending count banner -->
+  <div *ngIf="pendingCount > 0" class="pending-banner">
+    <i class="fas fa-exclamation-circle"></i> {{ pendingCount }} document(s) pending review
+  </div>
+
+  <!-- Documents Grid -->
+  <div class="docs-grid">
+    <div *ngFor="let doc of filteredDocuments" class="doc-card">
+      <div class="doc-icon">
+        <i class="fas" [ngClass]="getTypeIcon(doc.doc_type)"></i>
+      </div>
+      <div class="doc-details">
+        <h4>{{ doc.doc_name }}</h4>
+        <span class="doc-type">{{ doc.doc_type }}</span>
+        <span class="doc-emp">
+          <i class="fas fa-user"></i> {{ doc.employee_name }}
+        </span>
+        <span class="doc-date">{{ doc.created_at | date:'mediumDate' }}</span>
+      </div>
+      <div class="doc-status-col">
+        <span class="status-badge" [ngClass]="doc.status === 'Approved' ? 'approved' : doc.status === 'Rejected' ? 'rejected' : 'pending'">
+          {{ doc.status || 'Pending' }}
+        </span>
+        <span *ngIf="doc.remarks" class="remarks-text">{{ doc.remarks }}</span>
+      </div>
+      <div class="doc-actions">
+        <button class="btn-icon view" (click)="viewDoc(doc.file_url)" title="View">
+          <i class="fas fa-eye"></i>
+        </button>
+        <button *ngIf="doc.status === 'Pending'" class="btn-icon approve" (click)="openReview(doc, 'approve')" title="Approve">
+          <i class="fas fa-check"></i>
+        </button>
+        <button *ngIf="doc.status === 'Pending'" class="btn-icon reject" (click)="openReview(doc, 'reject')" title="Reject">
+          <i class="fas fa-times"></i>
+        </button>
+        <button class="btn-icon delete" (click)="deleteDoc(doc.id)" title="Delete">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="filteredDocuments.length === 0" class="empty">
+      <i class="fas fa-folder-open"></i>
+      <p>No documents found</p>
+    </div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div *ngIf="showUpload" class="modal-overlay" (click)="showUpload = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Upload Document</h3>
+      <div class="form-group">
+        <label>Employee</label>
+        <select [(ngModel)]="uploadData.employee_id">
+          <option [value]="0" disabled>Select Employee</option>
+          <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }} - {{ emp.department }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Document Type</label>
+        <select [(ngModel)]="uploadData.doc_type">
+          <option value="" disabled>Select Type</option>
+          <option *ngFor="let t of docTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Document Name (optional)</label>
+        <input type="text" [(ngModel)]="uploadData.doc_name" placeholder="Auto-filled from file name" />
+      </div>
+      <div class="form-group">
+        <label>File</label>
+        <div class="file-input">
+          <input type="file" (change)="onFileSelect($event)" id="docFile" />
+          <label for="docFile" class="file-label">
+            <i class="fas fa-paperclip"></i>
+            {{ selectedFile ? selectedFile.name : 'Choose file...' }}
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-save" (click)="upload()">Upload</button>
+        <button class="btn btn-cancel" (click)="showUpload = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Modal -->
+  <div *ngIf="showReview" class="modal-overlay" (click)="showReview = false">
+    <div class="modal review-modal" (click)="$event.stopPropagation()">
+      <h3>{{ reviewAction === 'approve' ? 'Approve' : 'Reject' }} Document</h3>
+      <p class="review-doc-name"><i class="fas fa-file"></i> {{ reviewDoc?.doc_name }}</p>
+      <p class="review-emp"><i class="fas fa-user"></i> {{ reviewDoc?.employee_name }}</p>
+      <div class="form-group">
+        <label>Remarks (optional)</label>
+        <textarea [(ngModel)]="reviewRemarks" rows="3" placeholder="Add any remarks..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" [ngClass]="reviewAction === 'approve' ? 'btn-approve' : 'btn-reject'" (click)="submitReview()">
+          <i class="fas" [ngClass]="reviewAction === 'approve' ? 'fa-check' : 'fa-times'"></i>
+          {{ reviewAction === 'approve' ? 'Approve' : 'Reject' }}
+        </button>
+        <button class="btn btn-cancel" (click)="showReview = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,55 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <div class="header-content">
+      <div><h1>Announcements</h1><p>Send company-wide or role-based announcements</p></div>
+      <button class="btn btn-add" (click)="showForm = !showForm"><i class="fas fa-bullhorn"></i> New Announcement</button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div *ngIf="showForm" class="create-card">
+    <div class="form-group"><label>Title</label><input type="text" [(ngModel)]="formData.title" placeholder="Announcement title..." /></div>
+    <div class="form-group"><label>Message</label><textarea [(ngModel)]="formData.message" rows="4" placeholder="Write your announcement..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Target Audience</label>
+        <select [(ngModel)]="formData.target_role">
+          <option *ngFor="let r of roles" [value]="r">{{ r === 'all' ? 'Everyone' : (r | titlecase) }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select [(ngModel)]="formData.priority">
+          <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-save" (click)="submit()"><i class="fas fa-paper-plane"></i> Send</button>
+      <button class="btn btn-cancel" (click)="showForm = false">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Announcements List -->
+  <div class="announcements-list">
+    <div *ngFor="let a of announcements" class="announcement-card">
+      <div class="ann-header">
+        <span class="priority-dot" [style.background]="getPriorityColor(a.priority)"></span>
+        <h3>{{ a.title }}</h3>
+        <span class="priority-badge" [style.background]="getPriorityColor(a.priority) + '20'" [style.color]="getPriorityColor(a.priority)">{{ a.priority }}</span>
+      </div>
+      <p class="ann-message">{{ a.message }}</p>
+      <div class="ann-footer">
+        <span class="ann-target"><i class="fas fa-users"></i> {{ a.target_role === 'all' ? 'Everyone' : (a.target_role | titlecase) }}</span>
+        <span class="ann-date">{{ a.created_at | date:'medium' }}</span>
+        <button class="btn-sm delete" (click)="deleteAnnouncement(a.id)"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+    <div *ngIf="announcements.length === 0" class="empty"><i class="fas fa-bullhorn"></i><p>No announcements yet</p></div>
+  </div>
+</div>
+</div>

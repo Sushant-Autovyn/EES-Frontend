@@ -1,0 +1,44 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <div class="header-content">
+      <div><h1>Backup & Recovery</h1><p>Manage database backups and system recovery</p></div>
+      <button class="btn btn-backup" (click)="createBackup()" [disabled]="creating">
+        <i class="fas" [ngClass]="creating ? 'fa-spinner fa-spin' : 'fa-download'"></i>
+        {{ creating ? 'Creating...' : 'Create Backup' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- DB Stats -->
+  <div class="stats-grid">
+    <div class="stat-card"><i class="fas fa-users"></i><span class="stat-value">{{ dbStats.total_users || 0 }}</span><span class="stat-label">Users</span></div>
+    <div class="stat-card"><i class="fas fa-user-tie"></i><span class="stat-value">{{ dbStats.total_employees || 0 }}</span><span class="stat-label">Employees</span></div>
+    <div class="stat-card"><i class="fas fa-calendar-check"></i><span class="stat-value">{{ dbStats.total_attendance || 0 }}</span><span class="stat-label">Attendance Records</span></div>
+    <div class="stat-card"><i class="fas fa-plane"></i><span class="stat-value">{{ dbStats.total_leaves || 0 }}</span><span class="stat-label">Leave Records</span></div>
+    <div class="stat-card"><i class="fas fa-money-bill"></i><span class="stat-value">{{ dbStats.total_payroll || 0 }}</span><span class="stat-label">Payroll Records</span></div>
+  </div>
+
+  <!-- Backups List -->
+  <div class="backups-section">
+    <h3>Available Backups</h3>
+    <div class="backups-list">
+      <div *ngFor="let b of backups" class="backup-card">
+        <div class="backup-icon"><i class="fas fa-database"></i></div>
+        <div class="backup-info">
+          <strong>{{ b.name }}</strong>
+          <span>{{ b.date | date:'medium' }} • {{ formatSize(b.size) }}</span>
+        </div>
+        <div class="backup-actions">
+          <button class="btn-icon download" (click)="downloadBackup(b.name)" title="Download"><i class="fas fa-download"></i></button>
+          <button class="btn-icon delete" (click)="deleteBackup(b.name)" title="Delete"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      <div *ngIf="backups.length === 0" class="empty"><i class="fas fa-database"></i><p>No backups yet. Create one to get started.</p></div>
+    </div>
+  </div>
+</div>
+</div>

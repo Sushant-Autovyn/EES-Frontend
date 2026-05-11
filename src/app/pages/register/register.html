@@ -1,0 +1,109 @@
+<div class="register-container">
+
+  <!-- Left Panel -->
+  <div class="register-left">
+    <div class="left-content">
+      <img src="autovyn_logo.jpg" alt="Logo" class="brand-logo">
+      <h1>Build Your <span class="highlight">Dream Team</span></h1>
+      <p class="subtitle">Create your account and unlock powerful tools to hire, manage, and grow your workforce seamlessly.</p>
+      <div class="stats-row">
+        <div class="stat-box">
+          <span class="stat-number">4</span>
+          <span class="stat-label">User Roles</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-box">
+          <span class="stat-number">6+</span>
+          <span class="stat-label">Modules</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-box">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Access</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="register-right">
+    <div class="register-box">
+
+      <div class="register-header">
+        <h2>Create Account</h2>
+        <p>Fill in the details to register</p>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <div class="input-wrapper">
+          <span class="input-icon"><i class="fas fa-user"></i></span>
+          <input
+            id="name"
+            type="text"
+            placeholder="Enter your full name"
+            [(ngModel)]="registerData.name"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <span class="input-icon">&#9993;</span>
+          <input
+            id="email"
+            type="email"
+            placeholder="name@company.com"
+            [(ngModel)]="registerData.email"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <div class="input-wrapper">
+          <span class="input-icon"><i class="fas fa-briefcase"></i></span>
+          <select id="role" [(ngModel)]="registerData.role">
+            <option *ngFor="let r of roles" [value]="r.role_name">{{ r.role_name | titlecase }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon"><i class="fas fa-lock"></i></span>
+          <input
+            id="password"
+            type="password"
+            placeholder="Create a password"
+            [(ngModel)]="registerData.password"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon"><i class="fas fa-lock"></i></span>
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm your password"
+            [(ngModel)]="confirmPassword"
+          >
+        </div>
+      </div>
+
+      <button class="register-btn" (click)="register()">
+        Create Account
+        <span class="btn-arrow">&#8594;</span>
+      </button>
+
+      <p class="login-link">Already have an account? <a routerLink="/">Sign In</a></p>
+
+    </div>
+  </div>
+
+</div>

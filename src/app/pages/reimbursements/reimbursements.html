@@ -1,0 +1,112 @@
+<app-sidebar></app-sidebar>
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+
+    <div class="page-header">
+      <h1><i class="fas fa-receipt"></i> Employee Reimbursements</h1>
+      <button class="add-btn" (click)="showForm = !showForm">
+        {{ showForm ? '✕ Close' : '+ New Claim' }}
+      </button>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-row">
+      <div class="summary-card approved">
+        <div class="summary-icon">&#9989;</div>
+        <div>
+          <div class="summary-value">&#8377;{{summary.total_approved | number:'1.0-0'}}</div>
+          <div class="summary-label">Total Approved</div>
+        </div>
+      </div>
+      <div class="summary-card pending">
+        <div class="summary-icon">&#9203;</div>
+        <div>
+          <div class="summary-value">&#8377;{{summary.total_pending | number:'1.0-0'}}</div>
+          <div class="summary-label">Pending ({{summary.pending_count || 0}})</div>
+        </div>
+      </div>
+      <div class="summary-card rejected">
+        <div class="summary-icon"><i class="fas fa-times-circle"></i></div>
+        <div>
+          <div class="summary-value">&#8377;{{summary.total_rejected | number:'1.0-0'}}</div>
+          <div class="summary-label">Total Rejected</div>
+        </div>
+      </div>
+      <div class="summary-card total">
+        <div class="summary-icon"><i class="fas fa-file-alt"></i></div>
+        <div>
+          <div class="summary-value">{{summary.total_count || 0}}</div>
+          <div class="summary-label">Total Claims</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD FORM -->
+    <div class="claim-form" *ngIf="showForm">
+      <h3>Submit New Reimbursement</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Claim Type</label>
+          <select [(ngModel)]="formData.type">
+            <option value="">Select Type</option>
+            <option *ngFor="let t of typeOptions" [value]="t">{{t}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount (&#8377;)</label>
+          <input type="number" [(ngModel)]="formData.amount" placeholder="0.00">
+        </div>
+        <div class="form-group full">
+          <label>Description</label>
+          <textarea [(ngModel)]="formData.description" placeholder="Describe the expense..." rows="3"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="submit-btn" (click)="submit()"><i class="fas fa-paper-plane"></i> Submit Claim</button>
+        <button class="cancel-btn" (click)="showForm=false; resetForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <button [class.active]="filterStatus==='all'" (click)="filterStatus='all'">All</button>
+      <button [class.active]="filterStatus==='Pending'" (click)="filterStatus='Pending'">Pending</button>
+      <button [class.active]="filterStatus==='Approved'" (click)="filterStatus='Approved'">Approved</button>
+      <button [class.active]="filterStatus==='Rejected'" (click)="filterStatus='Rejected'">Rejected</button>
+    </div>
+
+    <!-- CLAIMS LIST -->
+    <div class="claims-list">
+      <div class="claim-card" *ngFor="let c of filteredClaims">
+        <div class="claim-left">
+          <div class="claim-avatar" [class]="'type-' + c.type?.toLowerCase()">{{c.type?.charAt(0)}}</div>
+          <div class="claim-info">
+            <h4>{{c.type}}</h4>
+            <span class="claim-by">{{c.name}} &bull; {{c.department}}</span>
+            <p class="claim-desc">{{c.description}}</p>
+            <span class="claim-date">{{c.created_at | date:'mediumDate'}}</span>
+          </div>
+        </div>
+        <div class="claim-right">
+          <div class="claim-amount">&#8377;{{c.amount | number:'1.2-2'}}</div>
+          <span class="status-badge"
+            [class.pending]="c.status==='Pending'"
+            [class.approved]="c.status==='Approved'"
+            [class.rejected]="c.status==='Rejected'">
+            {{c.status}}
+          </span>
+          <div class="claim-actions" *ngIf="c.status === 'Pending'">
+            <button class="approve-btn" (click)="approve(c.id)"><i class="fas fa-check"></i></button>
+            <button class="reject-btn" (click)="reject(c.id)"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-data" *ngIf="filteredClaims.length === 0">
+      No reimbursement claims found.
+    </div>
+
+  </div>
+</div>

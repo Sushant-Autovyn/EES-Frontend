@@ -1,0 +1,94 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <h1>Employee Onboarding</h1>
+    <p>Manage onboarding steps for new employees</p>
+  </div>
+
+  <div class="content-grid">
+    <!-- Employee List -->
+    <div class="employee-panel">
+      <div class="panel-header">
+        <h3>Employees</h3>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Search employees..." class="search-input" />
+      </div>
+      <div class="employee-list">
+        <div *ngFor="let emp of filteredEmployees"
+             class="emp-card"
+             [class.active]="selectedEmployee?.id === emp.id"
+             (click)="selectEmployee(emp)">
+          <div class="emp-avatar">{{ emp.name?.charAt(0) }}</div>
+          <div class="emp-info">
+            <strong>{{ emp.name }}</strong>
+            <span>{{ emp.department || 'No Dept' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding Steps -->
+    <div class="steps-panel">
+      <div *ngIf="!selectedEmployee" class="empty-state">
+        <i class="fas fa-user-plus"></i>
+        <p>Select an employee to view onboarding steps</p>
+      </div>
+
+      <div *ngIf="selectedEmployee">
+        <div class="panel-header">
+          <h3>{{ selectedEmployee.name }} - Onboarding</h3>
+          <div class="header-actions">
+            <button class="btn btn-init" (click)="initOnboarding(selectedEmployee.id)">
+              <i class="fas fa-magic"></i> Init Default Steps
+            </button>
+            <button class="btn btn-add" (click)="showAddForm = !showAddForm">
+              <i class="fas fa-plus"></i> Add Step
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getProgress()"></div>
+          </div>
+          <span class="progress-text">{{ getProgress() }}% Complete</span>
+        </div>
+
+        <!-- Add Step Form -->
+        <div *ngIf="showAddForm" class="add-form">
+          <input type="text" [(ngModel)]="newStep" placeholder="Enter step name..." class="form-input" />
+          <button class="btn btn-save" (click)="addStep()">Save</button>
+          <button class="btn btn-cancel" (click)="showAddForm = false">Cancel</button>
+        </div>
+
+        <!-- Steps List -->
+        <div class="steps-list">
+          <div *ngFor="let task of employeeTasks; let i = index"
+               class="step-item"
+               [class.completed]="task.status === 'Completed'">
+            <div class="step-number">{{ i + 1 }}</div>
+            <div class="step-content">
+              <span class="step-name">{{ task.step }}</span>
+              <span class="step-status" [class.done]="task.status === 'Completed'">{{ task.status }}</span>
+            </div>
+            <div class="step-actions">
+              <button *ngIf="task.status !== 'Completed'" class="btn-icon complete" (click)="completeStep(task.id)" title="Mark Complete">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="btn-icon delete" (click)="deleteStep(task.id)" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="employeeTasks.length === 0" class="empty-steps">
+            <p>No onboarding steps yet. Click "Init Default Steps" to start.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

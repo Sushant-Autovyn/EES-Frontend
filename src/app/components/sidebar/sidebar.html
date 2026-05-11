@@ -1,0 +1,125 @@
+<button class="menu-btn" *ngIf="!isOpen" (click)="toggle()">☰</button>
+
+<div class="overlay" *ngIf="isOpen" (click)="close()"></div>
+
+<div class="sidebar" [class.open]="isOpen">
+
+  <div class="logo">
+    <img src="autovyn_logo.jpg" alt="Autovyn Logo">
+  </div>
+
+  <ul>
+
+    <li *ngIf="hasPermission('dashboard')">
+      <a routerLink="/dashboard" routerLinkActive="active" (click)="close()">Dashboard</a>
+    </li>
+
+    <li *ngIf="hasPermission('employees')">
+      <a routerLink="/employees" routerLinkActive="active" (click)="close()">Employees</a>
+    </li>
+
+    <li *ngIf="hasPermission('attendance')">
+      <a routerLink="/attendance" routerLinkActive="active" (click)="close()">Attendance</a>
+    </li>
+
+    <li *ngIf="hasPermission('leaves')">
+      <a routerLink="/leaves" routerLinkActive="active" (click)="close()">Leaves</a>
+    </li>
+
+    <li *ngIf="hasPermission('payroll')">
+      <a routerLink="/payroll" routerLinkActive="active" (click)="close()">Payroll</a>
+    </li>
+
+    <li *ngIf="hasPermission('salary-records')">
+      <a routerLink="/salary-records" routerLinkActive="active" (click)="close()">Salary Records</a>
+    </li>
+
+    <li *ngIf="hasPermission('payslip')">
+      <a routerLink="/payslip" routerLinkActive="active" (click)="close()">Payslips</a>
+    </li>
+
+    <li *ngIf="hasPermission('attendance-salary')">
+      <a routerLink="/attendance-salary" routerLinkActive="active" (click)="close()">Attendance Salary</a>
+    </li>
+
+    <li *ngIf="hasPermission('financial-reports')">
+      <a routerLink="/financial-reports" routerLinkActive="active" (click)="close()">Financial Reports</a>
+    </li>
+
+    <li *ngIf="hasPermission('reimbursements')">
+      <a routerLink="/reimbursements" routerLinkActive="active" (click)="close()">Reimbursements</a>
+    </li>
+
+    <li *ngIf="hasPermission('roles')">
+      <a routerLink="/roles" routerLinkActive="active" (click)="close()">Roles</a>
+    </li>
+
+    <li *ngIf="hasPermission('user-management')">
+      <a routerLink="/user-management" routerLinkActive="active" (click)="close()">User Management</a>
+    </li>
+
+    <li *ngIf="hasPermission('branch-management')">
+      <a routerLink="/branch-management" routerLinkActive="active" (click)="close()">Branches</a>
+    </li>
+
+    <li *ngIf="hasPermission('admin-reports')">
+      <a routerLink="/admin-reports" routerLinkActive="active" (click)="close()">Reports</a>
+    </li>
+
+    <li *ngIf="hasPermission('announcements')">
+      <a routerLink="/announcements" routerLinkActive="active" (click)="close()">Announcements</a>
+    </li>
+
+    <li *ngIf="hasPermission('system-settings')">
+      <a routerLink="/system-settings" routerLinkActive="active" (click)="close()">Settings</a>
+    </li>
+
+    <li *ngIf="hasPermission('audit-logs')">
+      <a routerLink="/audit-logs" routerLinkActive="active" (click)="close()">Audit Logs</a>
+    </li>
+
+    <li *ngIf="hasPermission('backup-recovery')">
+      <a routerLink="/backup-recovery" routerLinkActive="active" (click)="close()">Backup & Recovery</a>
+    </li>
+
+    <li *ngIf="hasPermission('hr-onboarding')">
+      <a routerLink="/hr-onboarding" routerLinkActive="active" (click)="close()">Onboarding</a>
+    </li>
+
+    <li *ngIf="hasPermission('hr-recruitment')">
+      <a routerLink="/hr-recruitment" routerLinkActive="active" (click)="close()">Recruitment</a>
+    </li>
+
+    <li *ngIf="hasPermission('hr-documents')">
+      <a routerLink="/hr-documents" routerLinkActive="active" (click)="close()">Documents</a>
+    </li>
+
+    <li *ngIf="hasPermission('hr-reports')">
+      <a routerLink="/hr-reports" routerLinkActive="active" (click)="close()">HR Reports</a>
+    </li>
+
+    <li *ngIf="hasPermission('hr-departments')">
+      <a routerLink="/hr-departments" routerLinkActive="active" (click)="close()">Departments</a>
+    </li>
+
+    <li *ngIf="hasPermission('calendar')">
+      <a routerLink="/calendar" routerLinkActive="active" (click)="close()">Calendar</a>
+    </li>
+
+    <li *ngIf="hasPermission('team-members')">
+      <a routerLink="/team-members" routerLinkActive="active" (click)="close()">Team Members</a>
+    </li>
+
+    <li *ngIf="hasPermission('my-documents')">
+      <a routerLink="/my-documents" routerLinkActive="active" (click)="close()">My Documents</a>
+    </li>
+
+  </ul>
+
+  <div class="sidebar-logout">
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+
+</div>

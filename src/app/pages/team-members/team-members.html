@@ -1,0 +1,36 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+
+  <app-navbar></app-navbar>
+
+  <div class="content">
+
+    <div class="page-header">
+      <h1><i class="fas fa-users"></i> Team Members</h1>
+      <div class="search-box">
+        <input type="text" placeholder="Search by name, department, phone..." [(ngModel)]="searchText" (input)="onSearch()">
+      </div>
+    </div>
+
+    <div class="members-grid">
+      <div class="member-card" *ngFor="let m of filteredMembers">
+        <div class="member-avatar">
+          <img *ngIf="m.profile_image" [src]="'http://localhost:5000/uploads/' + m.profile_image" alt="">
+          <span *ngIf="!m.profile_image" class="avatar-placeholder">{{ m.name?.charAt(0) }}</span>
+        </div>
+        <div class="member-info">
+          <strong>{{ m.name }}</strong>
+          <span class="member-dept">{{ m.department || 'N/A' }} &middot; {{ m.designation || '' }}</span>
+          <span class="member-phone" *ngIf="m.phone"><i class="fas fa-phone"></i> {{ m.phone }}</span>
+          <span class="member-phone no-phone" *ngIf="!m.phone"><i class="fas fa-phone"></i> Not available</span>
+          <span class="member-email">&#9993; {{ m.email }}</span>
+        </div>
+      </div>
+    </div>
+
+    <p *ngIf="filteredMembers.length === 0" class="no-members">No team members found</p>
+
+  </div>
+
+</div>

@@ -1,0 +1,102 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <div class="header-content">
+      <div>
+        <h1><i class="fas fa-folder-open"></i> My Documents</h1>
+        <p>Upload and track your documents</p>
+      </div>
+      <button class="btn-upload" (click)="showUpload = true"><i class="fas fa-cloud-upload-alt"></i> Upload Document</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card" (click)="filterStatus = ''">
+      <span class="stat-val">{{ documents.length }}</span>
+      <span class="stat-lbl">Total</span>
+    </div>
+    <div class="stat-card pending" (click)="filterStatus = 'Pending'">
+      <span class="stat-val">{{ pendingCount }}</span>
+      <span class="stat-lbl">Pending</span>
+    </div>
+    <div class="stat-card approved" (click)="filterStatus = 'Approved'">
+      <span class="stat-val">{{ approvedCount }}</span>
+      <span class="stat-lbl">Approved</span>
+    </div>
+    <div class="stat-card rejected" (click)="filterStatus = 'Rejected'">
+      <span class="stat-val">{{ rejectedCount }}</span>
+      <span class="stat-lbl">Rejected</span>
+    </div>
+  </div>
+
+  <!-- Documents List -->
+  <div class="doc-list">
+    <div *ngFor="let doc of filteredDocs" class="doc-card">
+      <div class="doc-icon"><i class="fas {{ getTypeIcon(doc.doc_type) }}"></i></div>
+      <div class="doc-info">
+        <h4>{{ doc.doc_name }}</h4>
+        <span class="doc-type">{{ doc.doc_type }}</span>
+        <span class="doc-date">Uploaded: {{ doc.created_at | date:'mediumDate' }}</span>
+      </div>
+      <div class="doc-status">
+        <span class="status-badge {{ getStatusClass(doc.status) }}">{{ doc.status || 'Pending' }}</span>
+        <span *ngIf="doc.remarks" class="remarks"><i class="fas fa-comment"></i> {{ doc.remarks }}</span>
+        <span *ngIf="doc.reviewed_at" class="reviewed-date">Reviewed: {{ doc.reviewed_at | date:'mediumDate' }}</span>
+      </div>
+      <div class="doc-actions">
+        <button class="btn-view" (click)="viewDoc(doc.file_url)" title="View"><i class="fas fa-eye"></i></button>
+      </div>
+    </div>
+
+    <div *ngIf="filteredDocs.length === 0" class="empty">
+      <i class="fas fa-folder-open"></i>
+      <p>No documents found</p>
+    </div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div *ngIf="showUpload" class="modal-overlay" (click)="showUpload = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fas fa-cloud-upload-alt"></i> Upload Document</h3>
+        <button class="close-btn" (click)="showUpload = false">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Document Type *</label>
+          <select [(ngModel)]="uploadData.doc_type">
+            <option value="">Select Type</option>
+            <option *ngFor="let t of docTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Document Name (optional)</label>
+          <input type="text" [(ngModel)]="uploadData.doc_name" placeholder="Enter document name" />
+        </div>
+        <div class="form-group">
+          <label>Select File *</label>
+          <div class="file-upload-area" (click)="fileInput.click()">
+            <input type="file" #fileInput hidden (change)="onFileSelect($event)" />
+            <div class="file-label">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>{{ selectedFile ? selectedFile.name : 'Click to browse or drag file here' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="info-box">
+          <i class="fas fa-info-circle"></i>
+          <span>Your document will be sent to HR for review and approval.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-submit" (click)="upload()"><i class="fas fa-paper-plane"></i> Submit for Review</button>
+        <button class="btn-cancel" (click)="showUpload = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

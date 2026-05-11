@@ -1,0 +1,59 @@
+.header { padding: 20px 0; margin-bottom: 25px; }
+.header-content { display: flex; justify-content: space-between; align-items: center; }
+.header h1 { margin: 0 0 5px; font-size: 1.8rem; color: #0f172a; }
+.header p { margin: 0; color: #64748b; }
+.btn-add { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+.cat-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.cat-tabs button { padding: 8px 18px; border: 1px solid #e0e0e0; background: white; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+.cat-tabs button.active { background: #667eea; color: white; border-color: #667eea; }
+.cat-tabs button i { margin-right: 6px; }
+
+.add-form-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.form-row { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+.form-group { flex: 1; min-width: 180px; display: flex; flex-direction: column; }
+.form-group label { font-size: 0.82rem; color: #666; margin-bottom: 5px; }
+.form-group input, .form-group select { padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; }
+.form-group input:focus, .form-group select:focus { outline: none; border-color: #667eea; }
+.form-actions { display: flex; gap: 8px; }
+
+.settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.setting-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.2s; border: 1px solid transparent; }
+.setting-card:hover { border-color: #667eea; transform: translateY(-2px); }
+.setting-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.setting-header i { color: #667eea; }
+.cat-label { font-size: 0.72rem; color: #888; text-transform: uppercase; }
+.setting-card h4 { margin: 0 0 8px; color: #333; font-size: 0.95rem; }
+.setting-value { font-size: 1.1rem; font-weight: 600; color: #667eea; margin-bottom: 12px; }
+
+.edit-inline { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.edit-inline input { flex: 1; padding: 8px 10px; border: 1px solid #667eea; border-radius: 6px; font-size: 0.9rem; }
+
+.setting-actions { display: flex; gap: 6px; }
+.btn-sm { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.78rem; transition: all 0.2s; }
+.btn-sm.edit { background: #e3f2fd; color: #1976d2; }
+.btn-sm.edit:hover { background: #1976d2; color: white; }
+.btn-sm.save { background: #e8f5e9; color: #388e3c; }
+.btn-sm.save:hover { background: #388e3c; color: white; }
+.btn-sm.cancel { background: #f5f5f5; color: #666; }
+.btn-sm.delete { background: #fce4ec; color: #e53935; }
+.btn-sm.delete:hover { background: #e53935; color: white; }
+
+.btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500; }
+.btn-save { background: #4caf50; color: white; }
+.btn-cancel { background: #eee; color: #666; }
+
+.empty { text-align: center; padding: 40px; color: #aaa; }
+@media (max-width: 768px) {
+  .header-content { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .header h1 { font-size: 1.4rem; }
+  .settings-grid { grid-template-columns: 1fr; }
+  .form-row { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .header h1 { font-size: 1.2rem; }
+  .cat-tabs button { padding: 6px 12px; font-size: 0.78rem; }
+  .setting-card { padding: 16px; }
+  .form-group { min-width: 100%; }
+}

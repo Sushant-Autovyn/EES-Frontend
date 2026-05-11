@@ -1,0 +1,95 @@
+<app-sidebar></app-sidebar>
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+
+    <div class="page-header">
+      <h1><i class="fas fa-calendar-check"></i> Attendance-Based Salary</h1>
+      <div class="month-filter">
+        <select [(ngModel)]="selectedMonth" (change)="loadSummary()">
+          <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">{{getMonthName(m)}}</option>
+        </select>
+        <input type="number" [(ngModel)]="selectedYear" (change)="loadSummary()" min="2020" max="2030">
+      </div>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-row">
+      <div class="summary-card green">
+        <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+        <div>
+          <div class="summary-number">{{totalPresent}}</div>
+          <div class="summary-label">Total Present Days</div>
+        </div>
+      </div>
+      <div class="summary-card orange">
+        <div class="summary-icon"><i class="fas fa-file-alt"></i></div>
+        <div>
+          <div class="summary-number">{{totalLeaves}}</div>
+          <div class="summary-label">Approved Leaves</div>
+        </div>
+      </div>
+      <div class="summary-card blue">
+        <div class="summary-icon"><i class="fas fa-clock"></i></div>
+        <div>
+          <div class="summary-number">{{totalOvertime | number:'1.1-1'}}h</div>
+          <div class="summary-label">Total Overtime</div>
+        </div>
+      </div>
+      <div class="summary-card purple">
+        <div class="summary-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <div class="summary-number">{{summary.length}}</div>
+          <div class="summary-label">Active Employees</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPLOYEE ATTENDANCE TABLE -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Present</th>
+            <th>Leaves</th>
+            <th>Overtime</th>
+            <th>Attendance %</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of summary">
+            <td class="emp-cell">
+              <div class="emp-avatar">{{emp.name?.charAt(0)}}</div>
+              <span>{{emp.name}}</span>
+            </td>
+            <td>{{emp.department}}</td>
+            <td><span class="count-badge green">{{emp.present_days}}</span></td>
+            <td><span class="count-badge orange">{{emp.approved_leaves}}</span></td>
+            <td><span class="count-badge blue">{{emp.overtime_hours | number:'1.1-1'}}h</span></td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="getAttendancePercent(emp)"
+                  [class.low]="getAttendancePercent(emp) < 50"
+                  [class.mid]="getAttendancePercent(emp) >= 50 && getAttendancePercent(emp) < 80"
+                  [class.high]="getAttendancePercent(emp) >= 80">
+                </div>
+                <span class="progress-text">{{getAttendancePercent(emp) | number:'1.0-0'}}%</span>
+              </div>
+            </td>
+            <td>
+              <button class="gen-btn" (click)="generatePayroll(emp)"><i class="fas fa-bolt"></i> Generate</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="no-data" *ngIf="summary.length === 0">
+      No attendance data found for {{getMonthName(selectedMonth)}} {{selectedYear}}.
+    </div>
+
+  </div>
+</div>

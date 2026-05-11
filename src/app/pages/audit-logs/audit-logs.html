@@ -1,0 +1,37 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <div class="header-content">
+      <div><h1>Audit Logs</h1><p>Track system activity and user actions</p></div>
+      <button class="btn btn-clear" (click)="clearOld()"><i class="fas fa-broom"></i> Clear Old Logs</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <input type="text" [(ngModel)]="searchAction" placeholder="Filter by action..." class="search-input" (keyup.enter)="load()" />
+    <input type="text" [(ngModel)]="searchEmail" placeholder="Filter by email..." class="search-input" (keyup.enter)="load()" />
+    <button class="btn btn-filter" (click)="load()"><i class="fas fa-search"></i></button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>Time</th><th>User</th><th>Action</th><th>Details</th><th>IP</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs">
+          <td class="time-cell">{{ log.created_at | date:'medium' }}</td>
+          <td>{{ log.user_email || 'System' }}</td>
+          <td><span class="action-badge" [style.color]="getActionColor(log.action)">{{ log.action }}</span></td>
+          <td class="details-cell">{{ log.details }}</td>
+          <td>{{ log.ip_address || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="logs.length === 0" class="empty"><i class="fas fa-history"></i><p>No audit logs found</p></div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,97 @@
+<app-sidebar></app-sidebar>
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+
+    <div class="page-header">
+      <h1><i class="fas fa-money-check-alt"></i> Payroll Management</h1>
+      <div class="header-actions">
+        <button class="gen-btn" (click)="showGenerate = !showGenerate" *ngIf="userRole === 'accountant' || userRole === 'admin'">
+          {{ showGenerate ? '✕ Close' : '⚡ Generate Payroll' }}
+        </button>
+        <button class="export-btn" (click)="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+      </div>
+    </div>
+
+    <!-- GENERATE FORM -->
+    <div class="generate-form" *ngIf="showGenerate">
+      <h3>Generate Monthly Payroll</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Employee</label>
+          <select [(ngModel)]="generateData.employee_id">
+            <option value="">Select Employee</option>
+            <option *ngFor="let emp of employees" [value]="emp.id">{{emp.name}} - {{emp.department}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Month</label>
+          <select [(ngModel)]="generateData.month">
+            <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">{{getMonthName(m)}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Year</label>
+          <input type="number" [(ngModel)]="generateData.year" min="2020" max="2030">
+        </div>
+        <div class="form-group btn-group">
+          <button class="process-btn" (click)="generatePayroll()"><i class="fas fa-bolt"></i> Generate</button>
+        </div>
+      </div>
+      <p class="form-hint"><i class="fas fa-lightbulb"></i> Make sure salary structure is set up before generating payroll.</p>
+    </div>
+
+    <!-- PAYROLL TABLE -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Period</th>
+            <th>Present</th>
+            <th>Gross</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of payroll">
+            <td class="emp-cell">
+              <div class="emp-avatar">{{item.name?.charAt(0)}}</div>
+              <span>{{item.name}}</span>
+            </td>
+            <td>{{item.department}}</td>
+            <td>{{getMonthName(item.month)}} {{item.year}}</td>
+            <td><span class="count-badge">{{item.present_days}}/{{item.working_days}}</span></td>
+            <td>&#8377;{{item.gross_salary | number:'1.0-0'}}</td>
+            <td class="deduct-cell">-&#8377;{{item.total_deductions | number:'1.0-0'}}</td>
+            <td class="net-cell">&#8377;{{item.net_salary | number:'1.0-0'}}</td>
+            <td>
+              <span class="status-badge"
+                [class.paid]="item.payment_status==='Paid'"
+                [class.pending]="item.payment_status==='Pending'">
+                {{item.payment_status}}
+              </span>
+            </td>
+            <td>
+              <button class="pay-btn" *ngIf="item.payment_status==='Pending'" (click)="processPayment(item.id)">
+                <i class="fas fa-wallet"></i> Pay
+              </button>
+              <span class="paid-text" *ngIf="item.payment_status==='Paid'">
+                {{item.payment_date | date:'shortDate'}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="no-data" *ngIf="payroll.length === 0">
+      No payroll records found. Generate payroll to get started.
+    </div>
+
+  </div>
+</div>

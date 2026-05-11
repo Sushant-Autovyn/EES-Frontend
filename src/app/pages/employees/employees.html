@@ -1,0 +1,107 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+
+  <app-navbar></app-navbar>
+
+  <div class="content">
+
+    <div class="page-header">
+      <h1>Employees</h1>
+      <div class="header-actions">
+        <button class="export-btn" (click)="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+        <button class="add-btn" (click)="toggleForm()">
+          {{ showForm ? '✕ Close' : '+ Add Employee' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- SEARCH & FILTER -->
+    <div class="filter-bar">
+      <input type="text" placeholder="Search by name..." [(ngModel)]="searchText" (input)="onSearch()">
+      <select [(ngModel)]="filterDepartment" (change)="onSearch()">
+        <option value="">All Departments</option>
+        <option value="IT">IT</option>
+        <option value="HR">HR</option>
+        <option value="Finance">Finance</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Operations">Operations</option>
+      </select>
+      <select [(ngModel)]="filterStatus" (change)="onSearch()">
+        <option value="">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+
+    <!-- ADD/EDIT FORM -->
+    <div class="form-box" *ngIf="showForm">
+      <input type="text" placeholder="Full Name" [(ngModel)]="employeeData.name">
+      <input type="email" placeholder="Email Address" [(ngModel)]="employeeData.email">
+      <input type="text" placeholder="Phone" [(ngModel)]="employeeData.phone">
+      <input type="text" placeholder="Department" [(ngModel)]="employeeData.department">
+      <input type="text" placeholder="Designation" [(ngModel)]="employeeData.designation">
+      <input type="number" placeholder="Salary" [(ngModel)]="employeeData.salary">
+      <select [(ngModel)]="employeeData.status">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+      <button (click)="addEmployee()">
+        {{ editMode ? 'Update' : 'Add' }} Employee
+      </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Salary</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of employees">
+            <td>{{emp.id}}</td>
+            <td>
+              <div class="emp-name">
+                <img *ngIf="emp.profile_image" [src]="'http://localhost:5000/uploads/' + emp.profile_image" class="emp-avatar">
+                <span>{{emp.name}}</span>
+              </div>
+            </td>
+            <td>{{emp.email}}</td>
+            <td>{{emp.phone || '-'}}</td>
+            <td>{{emp.department || '-'}}</td>
+            <td>{{emp.designation || '-'}}</td>
+            <td>₹{{emp.salary}}</td>
+            <td>
+              <span class="status-badge" [class.active]="emp.status==='Active'" [class.inactive]="emp.status==='Inactive'">
+                {{emp.status}}
+              </span>
+            </td>
+            <td class="action-btns">
+              <button class="edit-btn" (click)="editEmployee(emp)"><i class="fas fa-edit"></i></button>
+              <button class="delete-btn" (click)="deleteEmployee(emp.id)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="currentPage === 1"><i class="fas fa-arrow-left"></i> Prev</button>
+      <span class="page-info">Page {{currentPage}}</span>
+      <button (click)="nextPage()" [disabled]="employees.length < pageSize">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+
+  </div>
+
+</div>

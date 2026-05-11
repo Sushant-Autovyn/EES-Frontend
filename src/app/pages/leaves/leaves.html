@@ -1,0 +1,206 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+
+  <app-navbar></app-navbar>
+
+  <div class="content">
+
+    <div class="page-header">
+      <h1>Leave Management</h1>
+      <button class="export-btn" (click)="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+    </div>
+
+    <!-- TABS - Employee Only -->
+    <div class="tabs" *ngIf="userRole === 'employee'">
+      <button [class.active]="activeTab === 'apply'" (click)="activeTab = 'apply'">
+        <i class="fas fa-clipboard-list"></i> Apply & History
+      </button>
+      <button [class.active]="activeTab === 'balance'" (click)="activeTab = 'balance'">
+        <i class="fas fa-leaf"></i> Leave Balance
+      </button>
+    </div>
+
+    <!-- ========== TAB 1: APPLY & HISTORY ========== -->
+    <div *ngIf="activeTab === 'apply' || userRole !== 'employee'">
+
+      <!-- APPLY FORM - Only for Employee -->
+      <div class="form-box" *ngIf="userRole === 'employee'">
+        <input type="number" placeholder="Employee ID" [(ngModel)]="leaveData.employee_id">
+        <select [(ngModel)]="leaveData.leave_type">
+          <option value="">Select Leave Type</option>
+          <option value="Sick">Sick</option>
+          <option value="Casual">Casual</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Special">Special</option>
+        </select>
+        <input type="date" [(ngModel)]="leaveData.from_date">
+        <input type="date" [(ngModel)]="leaveData.to_date">
+        <input type="text" placeholder="Reason" [(ngModel)]="leaveData.reason">
+        <button (click)="applyLeave()">Apply Leave</button>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Employee</th>
+              <th>Type</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of leaves">
+              <td>{{item.id}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.leave_type}}</td>
+              <td>{{item.from_date | date:'shortDate'}}</td>
+              <td>{{item.to_date | date:'shortDate'}}</td>
+              <td>{{item.reason}}</td>
+              <td>
+                <span class="status-badge"
+                  [class.pending]="item.status==='Pending'"
+                  [class.approved]="item.status==='Approved'"
+                  [class.rejected]="item.status==='Rejected'">
+                  {{item.status}}
+                </span>
+              </td>
+              <td class="action-btns" *ngIf="item.status==='Pending' && (userRole==='admin' || userRole==='hr')">
+                <button class="approve-btn" (click)="approveLeave(item.id)"><i class="fas fa-check"></i></button>
+                <button class="reject-btn" (click)="rejectLeave(item.id)"><i class="fas fa-times"></i></button>
+              </td>
+              <td *ngIf="item.status!=='Pending' || (userRole!=='admin' && userRole!=='hr')">
+                <span class="done-text">{{item.status}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ========== TAB 2: LEAVE BALANCE ========== -->
+    <div *ngIf="activeTab === 'balance' && userRole === 'employee'">
+
+      <div class="balance-header">
+        <h2 class="balance-title"><i class="fas fa-leaf"></i> Total Paid Leaves</h2>
+        <span class="balance-year">Year {{currentYear}}</span>
+      </div>
+
+      <!-- SUMMARY ROW -->
+      <div class="balance-summary">
+        <div class="summary-item">
+          <span class="summary-number">{{getTotalAll()}}</span>
+          <span class="summary-label">Total Leaves</span>
+        </div>
+        <div class="summary-item used">
+          <span class="summary-number">{{getUsedAll()}}</span>
+          <span class="summary-label">Used</span>
+        </div>
+        <div class="summary-item remaining">
+          <span class="summary-number">{{getRemainingAll()}}</span>
+          <span class="summary-label">Remaining</span>
+        </div>
+      </div>
+
+      <!-- BALANCE CARDS -->
+      <div class="balance-grid">
+        <div class="balance-card sick">
+          <div class="balance-icon"><i class="fas fa-umbrella-beach"></i></div>
+          <div class="balance-info">
+            <span class="balance-type">Sick Leave</span>
+            <div class="balance-numbers">
+              <span class="balance-used">{{getUsed('Sick')}}</span>
+              <span class="balance-separator">/</span>
+              <span class="balance-total">{{getTotal('Sick')}}</span>
+            </div>
+            <div class="balance-bar">
+              <div class="balance-fill" [style.width.%]="getPercent('Sick')"></div>
+            </div>
+            <span class="balance-remaining">{{getRemaining('Sick')}} remaining</span>
+          </div>
+        </div>
+
+        <div class="balance-card casual">
+          <div class="balance-icon"><i class="fas fa-notes-medical"></i></div>
+          <div class="balance-info">
+            <span class="balance-type">Casual Leave</span>
+            <div class="balance-numbers">
+              <span class="balance-used">{{getUsed('Casual')}}</span>
+              <span class="balance-separator">/</span>
+              <span class="balance-total">{{getTotal('Casual')}}</span>
+            </div>
+            <div class="balance-bar">
+              <div class="balance-fill" [style.width.%]="getPercent('Casual')"></div>
+            </div>
+            <span class="balance-remaining">{{getRemaining('Casual')}} remaining</span>
+          </div>
+        </div>
+
+        <div class="balance-card emergency">
+          <div class="balance-icon"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="balance-info">
+            <span class="balance-type">Emergency Leave</span>
+            <div class="balance-numbers">
+              <span class="balance-used">{{getUsed('Emergency')}}</span>
+              <span class="balance-separator">/</span>
+              <span class="balance-total">{{getTotal('Emergency')}}</span>
+            </div>
+            <div class="balance-bar">
+              <div class="balance-fill" [style.width.%]="getPercent('Emergency')"></div>
+            </div>
+            <span class="balance-remaining">{{getRemaining('Emergency')}} remaining</span>
+          </div>
+        </div>
+
+        <div class="balance-card special">
+          <div class="balance-icon"><i class="fas fa-star"></i></div>
+          <div class="balance-info">
+            <span class="balance-type">Special Leave</span>
+            <div class="balance-numbers">
+              <span class="balance-used">{{getUsed('Special')}}</span>
+              <span class="balance-separator">/</span>
+              <span class="balance-total">{{getTotal('Special')}}</span>
+            </div>
+            <div class="balance-bar">
+              <div class="balance-fill" [style.width.%]="getPercent('Special')"></div>
+            </div>
+            <span class="balance-remaining">{{getRemaining('Special')}} remaining</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEAVE POLICY INFO -->
+      <div class="policy-section">
+        <h3 class="policy-title"><i class="fas fa-clipboard"></i> Leave Policy</h3>
+        <div class="policy-grid">
+          <div class="policy-item">
+            <span class="policy-dot sick-dot"></span>
+            <span class="policy-text"><strong>Sick Leave (6/year)</strong> — For illness or medical appointments</span>
+          </div>
+          <div class="policy-item">
+            <span class="policy-dot casual-dot"></span>
+            <span class="policy-text"><strong>Casual Leave (6/year)</strong> — For personal work or short trips</span>
+          </div>
+          <div class="policy-item">
+            <span class="policy-dot emergency-dot"></span>
+            <span class="policy-text"><strong>Emergency Leave (3/year)</strong> — For urgent unforeseen situations</span>
+          </div>
+          <div class="policy-item">
+            <span class="policy-dot special-dot"></span>
+            <span class="policy-text"><strong>Special Leave (2/year)</strong> — For marriage, bereavement, etc.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

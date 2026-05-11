@@ -1,0 +1,114 @@
+<app-sidebar></app-sidebar>
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+
+    <div class="page-header">
+      <h1><i class="fas fa-money-bill-wave"></i> Salary Records</h1>
+      <button class="add-btn" (click)="showForm = !showForm">
+        {{ showForm ? '✕ Close' : '+ Add Salary Structure' }}
+      </button>
+    </div>
+
+    <!-- ADD/EDIT FORM -->
+    <div class="salary-form" *ngIf="showForm">
+      <h3>{{ formData.employee_id ? 'Edit' : 'New' }} Salary Structure</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Employee</label>
+          <select [(ngModel)]="formData.employee_id">
+            <option value="">Select Employee</option>
+            <option *ngFor="let emp of employees" [value]="emp.id">{{emp.name}} - {{emp.department}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Basic Salary</label>
+          <input type="number" [(ngModel)]="formData.basic_salary" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>HRA</label>
+          <input type="number" [(ngModel)]="formData.hra" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>DA (Dearness Allowance)</label>
+          <input type="number" [(ngModel)]="formData.da" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>TA (Travel Allowance)</label>
+          <input type="number" [(ngModel)]="formData.ta" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Bonus</label>
+          <input type="number" [(ngModel)]="formData.bonus" placeholder="0.00">
+        </div>
+      </div>
+      <h4>Deductions</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>PF Deduction</label>
+          <input type="number" [(ngModel)]="formData.pf_deduction" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Tax Deduction</label>
+          <input type="number" [(ngModel)]="formData.tax_deduction" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Insurance</label>
+          <input type="number" [(ngModel)]="formData.insurance" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Other Deductions</label>
+          <input type="number" [(ngModel)]="formData.other_deductions" placeholder="0.00">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="save-btn" (click)="saveSalary()"><i class="fas fa-save"></i> Save Structure</button>
+        <button class="cancel-btn" (click)="showForm=false; resetForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- SALARY CARDS -->
+    <div class="salary-cards">
+      <div class="salary-card" *ngFor="let s of salaries">
+        <div class="card-header">
+          <div class="emp-info">
+            <div class="emp-avatar">{{s.name?.charAt(0)}}</div>
+            <div>
+              <h3>{{s.name}}</h3>
+              <span class="emp-meta">{{s.department}} &bull; {{s.designation}}</span>
+            </div>
+          </div>
+          <button class="edit-btn" (click)="editSalary(s)">&#9998; Edit</button>
+        </div>
+        <div class="card-body">
+          <div class="salary-section earnings">
+            <h4>Earnings</h4>
+            <div class="salary-row"><span>Basic Salary</span><span>&#8377;{{s.basic_salary | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>HRA</span><span>&#8377;{{s.hra | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>DA</span><span>&#8377;{{s.da | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>TA</span><span>&#8377;{{s.ta | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>Bonus</span><span>&#8377;{{s.bonus | number:'1.2-2'}}</span></div>
+            <div class="salary-row total"><span>Gross Salary</span><span>&#8377;{{getGross(s) | number:'1.2-2'}}</span></div>
+          </div>
+          <div class="salary-section deductions">
+            <h4>Deductions</h4>
+            <div class="salary-row"><span>PF</span><span>&#8377;{{s.pf_deduction | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>Tax</span><span>&#8377;{{s.tax_deduction | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>Insurance</span><span>&#8377;{{s.insurance | number:'1.2-2'}}</span></div>
+            <div class="salary-row"><span>Other</span><span>&#8377;{{s.other_deductions | number:'1.2-2'}}</span></div>
+            <div class="salary-row total deduct"><span>Total Deductions</span><span>&#8377;{{getDeductions(s) | number:'1.2-2'}}</span></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="net-label">Net Salary</span>
+          <span class="net-amount">&#8377;{{getNet(s) | number:'1.2-2'}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-data" *ngIf="salaries.length === 0 && !showForm">
+      No salary structures found. Click "Add Salary Structure" to get started.
+    </div>
+
+  </div>
+</div>

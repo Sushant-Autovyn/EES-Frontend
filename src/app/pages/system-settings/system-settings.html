@@ -1,0 +1,62 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="header">
+    <div class="header-content">
+      <div><h1>System Settings</h1><p>Configure company policies, working hours, leave & salary rules</p></div>
+      <button class="btn btn-add" (click)="showAddForm = !showAddForm"><i class="fas fa-plus"></i> Add Setting</button>
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs">
+    <button [class.active]="activeCategory === 'all'" (click)="activeCategory = 'all'">All</button>
+    <button *ngFor="let c of categories" [class.active]="activeCategory === c" (click)="activeCategory = c">
+      <i class="fas" [ngClass]="getCategoryIcon(c)"></i> {{ formatKey(c) }}
+    </button>
+  </div>
+
+  <!-- Add Form -->
+  <div *ngIf="showAddForm" class="add-form-card">
+    <div class="form-row">
+      <div class="form-group"><label>Key</label><input type="text" [(ngModel)]="newSetting.setting_key" placeholder="e.g. overtime_rate" /></div>
+      <div class="form-group"><label>Value</label><input type="text" [(ngModel)]="newSetting.setting_value" placeholder="e.g. 1.5" /></div>
+      <div class="form-group">
+        <label>Category</label>
+        <select [(ngModel)]="newSetting.category">
+          <option *ngFor="let c of categories" [value]="c">{{ formatKey(c) }}</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-save" (click)="addSetting()">Add</button>
+        <button class="btn btn-cancel" (click)="showAddForm = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Cards -->
+  <div class="settings-grid">
+    <div *ngFor="let s of filteredSettings" class="setting-card">
+      <div class="setting-header">
+        <i class="fas" [ngClass]="getCategoryIcon(s.category)"></i>
+        <span class="cat-label">{{ formatKey(s.category) }}</span>
+      </div>
+      <h4>{{ formatKey(s.setting_key) }}</h4>
+      <div *ngIf="editingId !== s.id" class="setting-value">{{ s.setting_value }}</div>
+      <div *ngIf="editingId === s.id" class="edit-inline">
+        <input type="text" [(ngModel)]="editValue" />
+        <button class="btn-sm save" (click)="saveEdit(s)"><i class="fas fa-check"></i></button>
+        <button class="btn-sm cancel" (click)="cancelEdit()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="setting-actions" *ngIf="editingId !== s.id">
+        <button class="btn-sm edit" (click)="startEdit(s)"><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn-sm delete" (click)="deleteSetting(s.id)"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="filteredSettings.length === 0" class="empty"><p>No settings found.</p></div>
+</div>
+</div>
