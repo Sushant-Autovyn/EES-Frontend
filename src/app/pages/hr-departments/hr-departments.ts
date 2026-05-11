@@ -28,7 +28,7 @@ export class HrDepartments implements OnInit {
     status: 'Active'
   };
 
-  apiUrl = 'http://localhost:5000/api/departments';
+  apiUrl = 'https://ees-backend-production.up.railway.app/api/departments';
 
   constructor(
     private http: HttpClient,

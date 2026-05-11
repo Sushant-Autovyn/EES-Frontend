@@ -47,7 +47,7 @@ login(){
   .subscribe((res:any)=>{
     localStorage.setItem('token', res.token);
     // Fetch and cache permissions before navigating
-    this.http.get<{ permissions: string[] }>('http://localhost:5000/api/roles/my-permissions', {
+    this.http.get<{ permissions: string[] }>('https://ees-backend-production.up.railway.app/api/roles/my-permissions', {
       headers: { Authorization: `Bearer ${res.token}` }
     }).subscribe({
       next: (permRes) => {

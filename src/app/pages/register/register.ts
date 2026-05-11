@@ -33,7 +33,7 @@ export class Register implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.http.get('http://localhost:5000/api/roles').subscribe({
+    this.http.get('https://ees-backend-production.up.railway.app/api/roles').subscribe({
       next: (res: any) => {
         this.roles = res;
       },

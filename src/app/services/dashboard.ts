@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class Dashboard {
 
   apiUrl =
-    'http://localhost:5000/api/dashboard';
+    'https://ees-backend-production.up.railway.app/api/dashboard';
 
   constructor(
     private http: HttpClient

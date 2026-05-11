@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class NotificationService {
 
-  apiUrl = 'http://localhost:5000/api/notifications';
+  apiUrl = 'https://ees-backend-production.up.railway.app/api/notifications';
 
   constructor(private http: HttpClient) {}
 

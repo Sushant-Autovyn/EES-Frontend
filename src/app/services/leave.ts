@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class Leave {
 
   apiUrl =
-    'http://localhost:5000/api/leaves';
+    'https://ees-backend-production.up.railway.app/api/leaves';
 
   constructor(
     private http: HttpClient
