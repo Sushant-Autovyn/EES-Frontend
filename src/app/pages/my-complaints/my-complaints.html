@@ -1,0 +1,127 @@
+<app-sidebar></app-sidebar>
+
+<div class="main">
+  <app-navbar></app-navbar>
+
+  <div class="content">
+
+    <div class="header">
+      <div class="header-content" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1><i class="fas fa-comments" style="margin-right:10px;color:#2563eb;"></i>My Complaints</h1>
+          <p>Raise and track concerns confidentially.</p>
+        </div>
+        <button class="add-btn" (click)="openForm()">
+          <i class="fas fa-plus"></i> New Complaint
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="filter-row">
+      <button class="chip" [class.active]="filterStatus==='all'" (click)="filterStatus='all'">
+        <i class="fas fa-list"></i> All
+      </button>
+      <button class="chip" [class.active]="filterStatus==='Pending'" (click)="filterStatus='Pending'">
+        <i class="fas fa-hourglass-half"></i> Pending
+      </button>
+      <button class="chip" [class.active]="filterStatus==='In Progress'" (click)="filterStatus='In Progress'">
+        <i class="fas fa-spinner"></i> In Progress
+      </button>
+      <button class="chip" [class.active]="filterStatus==='Resolved'" (click)="filterStatus='Resolved'">
+        <i class="fas fa-check-circle"></i> Resolved
+      </button>
+      <button class="chip" [class.active]="filterStatus==='Rejected'" (click)="filterStatus='Rejected'">
+        <i class="fas fa-times-circle"></i> Rejected
+      </button>
+    </div>
+
+    <!-- Empty -->
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <i class="fas fa-inbox"></i>
+      <p>No complaints to show.</p>
+    </div>
+
+    <!-- Cards -->
+    <div class="complaint-grid" *ngIf="filtered.length > 0">
+      <div class="complaint-card" *ngFor="let c of filtered">
+        <div class="card-top">
+          <div class="cat-icon">
+            <i class="fas" [class]="iconForCategory(c.category)"></i>
+          </div>
+          <div class="card-meta">
+            <span class="badge category">{{ c.category }}</span>
+            <span class="badge" [ngClass]="statusClass(c.status)">{{ c.status }}</span>
+          </div>
+        </div>
+        <h3 class="card-title">{{ c.subject }}</h3>
+        <p class="card-desc">{{ c.description }}</p>
+
+        <div class="card-attachment" *ngIf="c.attachment">
+          <a [href]="'http://localhost:5000/uploads/' + c.attachment" target="_blank">
+            <i class="fas fa-paperclip"></i> View attachment
+          </a>
+        </div>
+
+        <div class="admin-response" *ngIf="c.admin_response">
+          <strong><i class="fas fa-reply"></i> Response:</strong>
+          <p>{{ c.admin_response }}</p>
+        </div>
+
+        <div class="card-footer">
+          <span class="card-date">
+            <i class="fas fa-clock"></i> {{ c.created_at | date:'medium' }}
+          </span>
+          <button class="delete-btn" *ngIf="c.status === 'Pending'" (click)="cancel(c)">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" *ngIf="showForm" (click)="closeForm()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2><i class="fas fa-comment-medical"></i> New Complaint</h2>
+          <button class="icon-close" (click)="closeForm()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Subject *</label>
+            <input type="text" [(ngModel)]="form.subject" placeholder="Brief subject of the complaint">
+          </div>
+
+          <div class="form-group">
+            <label>Category *</label>
+            <select [(ngModel)]="form.category">
+              <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea [(ngModel)]="form.description" rows="5" placeholder="Describe the issue in detail..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Attachment (optional)</label>
+            <input type="file" (change)="onFileSelected($event)">
+            <small *ngIf="uploadFile"><i class="fas fa-check"></i> {{ uploadFile.name }}</small>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="cancel-btn" (click)="closeForm()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button class="submit-btn" (click)="submit()">
+            <i class="fas fa-paper-plane"></i> Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

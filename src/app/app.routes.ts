@@ -28,6 +28,8 @@ import { BackupRecovery } from './pages/backup-recovery/backup-recovery';
 import { AdminReports } from './pages/admin-reports/admin-reports';
 import { BranchManagement } from './pages/branch-management/branch-management';
 import { MyDocuments } from './pages/my-documents/my-documents';
+import { MyComplaints } from './pages/my-complaints/my-complaints';
+import { ManageComplaints } from './pages/manage-complaints/manage-complaints';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -59,4 +61,6 @@ export const routes: Routes = [
   { path: 'admin-reports', component: AdminReports, canActivate: [authGuard] },
   { path: 'branch-management', component: BranchManagement, canActivate: [authGuard] },
   { path: 'my-documents', component: MyDocuments, canActivate: [authGuard] },
+  { path: 'my-complaints', component: MyComplaints, canActivate: [authGuard] },
+  { path: 'manage-complaints', component: ManageComplaints, canActivate: [authGuard] },
 ];

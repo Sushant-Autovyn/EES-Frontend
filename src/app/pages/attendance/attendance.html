@@ -58,8 +58,8 @@
     <!-- ========== ADMIN/HR SECTION ========== -->
     <div *ngIf="userRole === 'admin' || userRole === 'hr'">
 
-      <!-- CHECK IN FORM -->
-      <div class="form-box">
+      <!-- CHECK IN FORM (HR only) -->
+      <div class="form-box" *ngIf="userRole === 'hr'">
         <input type="number" placeholder="Employee ID" [(ngModel)]="attendanceData.employee_id">
         <select [(ngModel)]="attendanceData.status">
           <option value="Present">Present</option>

@@ -4,12 +4,30 @@ html, body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Unified font across the entire app — overrides any per-component font-family */
+*, *::before, *::after {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* Keep Font Awesome icons rendering correctly */
+.fa, .fas, .far, .fal, .fab, .fa-solid, .fa-regular, .fa-light, .fa-brands,
+[class^="fa-"], [class*=" fa-"],
+.fa::before, .fas::before, .far::before, .fal::before, .fab::before,
+.fa-solid::before, .fa-regular::before, .fa-light::before, .fa-brands::before,
+[class^="fa-"]::before, [class*=" fa-"]::before,
+.fa::after, .fas::after, .far::after, .fal::after, .fab::after,
+.fa-solid::after, .fa-regular::after, .fa-light::after, .fa-brands::after,
+[class^="fa-"]::after, [class*=" fa-"]::after {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 5 Free", "Font Awesome 5 Brands", FontAwesome !important;
 }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 /* Sidebar scrollbar */
@@ -56,6 +74,138 @@ html, body {
   margin: 0;
   color: #64748b !important;
   opacity: 1 !important;
+}
+
+/* ===== Unified Button Theme ===== */
+.add-btn, .save-btn, .submit-btn, .create-btn, .update-btn, .upload-btn,
+.export-btn, .download-btn, .generate-btn, .process-btn, .refresh-btn,
+.search-btn, .filter-btn, .view-btn, .approve-btn, .assign-btn, .pay-btn,
+.gen-btn, .report-btn, .checkin-btn, .checkout-btn, .interview-btn,
+.btn-add, .btn-save, .btn-update, .btn-create, .btn-submit, .btn-upload,
+.btn-export, .btn-download, .btn-generate, .btn-process, .btn-refresh,
+.btn-search, .btn-filter, .btn-view, .btn-approve, .btn-assign,
+.btn-init, .btn-backup,
+.btn-icon.view, .btn-icon.approve, .btn-icon.download,
+.btn-sm.save, .btn-sm.approve {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
+  transition: transform .18s, box-shadow .18s, background .25s !important;
+  white-space: nowrap;
+}
+.add-btn:hover, .save-btn:hover, .submit-btn:hover, .create-btn:hover, .update-btn:hover,
+.upload-btn:hover, .export-btn:hover, .download-btn:hover, .generate-btn:hover,
+.process-btn:hover, .refresh-btn:hover, .search-btn:hover, .filter-btn:hover,
+.view-btn:hover, .approve-btn:hover, .assign-btn:hover, .pay-btn:hover,
+.gen-btn:hover, .report-btn:hover, .checkin-btn:hover, .checkout-btn:hover,
+.interview-btn:hover,
+.btn-add:hover, .btn-save:hover, .btn-update:hover, .btn-create:hover, .btn-submit:hover,
+.btn-upload:hover, .btn-export:hover, .btn-download:hover, .btn-generate:hover,
+.btn-process:hover, .btn-refresh:hover, .btn-search:hover, .btn-filter:hover,
+.btn-view:hover, .btn-approve:hover, .btn-assign:hover, .btn-init:hover, .btn-backup:hover,
+.btn-icon.view:hover, .btn-icon.approve:hover, .btn-icon.download:hover,
+.btn-sm.save:hover, .btn-sm.approve:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+.delete-btn, .remove-btn, .reject-btn, .delete-user-btn,
+.btn-delete, .btn-remove, .btn-reject,
+.btn-sm.delete, .btn-icon.delete, .btn-icon.reject {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
+  transition: transform .18s, box-shadow .18s !important;
+  white-space: nowrap;
+}
+.delete-btn:hover, .remove-btn:hover, .reject-btn:hover, .delete-user-btn:hover,
+.btn-delete:hover, .btn-remove:hover, .btn-reject:hover,
+.btn-sm.delete:hover, .btn-icon.delete:hover, .btn-icon.reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4) !important;
+}
+
+.edit-btn, .btn-edit, .btn-sm.edit, .btn-icon.edit {
+  background: rgba(37, 99, 235, 0.08) !important;
+  color: #2563eb !important;
+  border: 1.5px solid rgba(37, 99, 235, 0.3) !important;
+  border-radius: 10px !important;
+  padding: 9px 18px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: all .2s !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+.edit-btn:hover, .btn-edit:hover, .btn-sm.edit:hover, .btn-icon.edit:hover {
+  background: #2563eb !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3) !important;
+}
+
+.cancel-btn, .back-btn, .reset-btn, .clear-btn,
+.btn-cancel, .btn-back, .btn-reset, .btn-clear, .btn-sm.cancel {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: background .2s, color .2s !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+.cancel-btn:hover, .back-btn:hover, .reset-btn:hover, .clear-btn:hover,
+.btn-cancel:hover, .btn-back:hover, .btn-reset:hover, .btn-clear:hover,
+.btn-sm.cancel:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+.btn-icon, .btn-sm {
+  min-width: 34px !important;
+  height: 34px !important;
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+}
+
+button:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
 }
 
 /* Global responsive */

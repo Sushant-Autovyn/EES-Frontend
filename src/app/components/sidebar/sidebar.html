@@ -114,6 +114,14 @@
       <a routerLink="/my-documents" routerLinkActive="active" (click)="close()">My Documents</a>
     </li>
 
+    <li *ngIf="hasPermission('my-complaints')">
+      <a routerLink="/my-complaints" routerLinkActive="active" (click)="close()">My Complaints</a>
+    </li>
+
+    <li *ngIf="hasPermission('complaints')">
+      <a routerLink="/manage-complaints" routerLinkActive="active" (click)="close()">Complaints</a>
+    </li>
+
   </ul>
 
   <div class="sidebar-logout">
