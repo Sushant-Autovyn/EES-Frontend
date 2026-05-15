@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AdminReportsService {
-  private apiUrl = 'http://localhost:5000/api/admin-reports';
+  private apiUrl = 'https://ees-backend-production.up.railway.app/api/admin-reports';
   constructor(private http: HttpClient) {}
 
   getSummary() { return this.http.get(`${this.apiUrl}/summary`); }

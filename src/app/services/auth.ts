@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class Auth {
 
   apiUrl =
-    'http://localhost:5000/api/auth';
+    'https://ees-backend-production.up.railway.app/api/auth';
 
   constructor(
     private http: HttpClient
@@ -23,12 +23,23 @@ export class Auth {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  forgotPassword(email:string){
-    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+  forgotPassword(phone:string, channel:string = 'whatsapp'){
+    return this.http.post(`${this.apiUrl}/forgot-password`, { phone, channel });
   }
 
   resetPassword(data:any){
     return this.http.post(`${this.apiUrl}/reset-password`, data);
+  }
+
+  // Send a custom message via WhatsApp or SMS (admin/hr only).
+  // Accepts a single phone string or an array of phone strings.
+  sendMessage(phone: string | string[], message: string, channel: string = 'whatsapp'){
+    const token = localStorage.getItem('token');
+    return this.http.post(
+      `${this.apiUrl}/send-message`,
+      { phone, message, channel },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
   }
 
 }

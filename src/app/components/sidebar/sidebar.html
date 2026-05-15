@@ -70,6 +70,10 @@
       <a routerLink="/announcements" routerLinkActive="active" (click)="close()">Announcements</a>
     </li>
 
+    <li *ngIf="hasPermission('announcements')">
+      <a routerLink="/send-message" routerLinkActive="active" (click)="close()">Send Message</a>
+    </li>
+
     <li *ngIf="hasPermission('system-settings')">
       <a routerLink="/system-settings" routerLinkActive="active" (click)="close()">Settings</a>
     </li>

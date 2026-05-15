@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ComplaintService {
-  private apiUrl = 'http://localhost:5000/api/complaints';
+  private apiUrl = 'https://ees-backend-production.up.railway.app/api/complaints';
 
   constructor(private http: HttpClient) {}
 

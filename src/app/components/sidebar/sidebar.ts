@@ -17,7 +17,7 @@ export class Sidebar implements OnInit, OnDestroy {
   permissions: string[] = [];
   private sub!: Subscription;
 
-  private apiUrl = 'http://localhost:5000/api/roles';
+  private apiUrl = 'https://ees-backend-production.up.railway.app/api/roles';
 
   constructor(private http: HttpClient, private roleService: RoleService, private cdr: ChangeDetectorRef, private router: Router) {
     const token = localStorage.getItem('token');

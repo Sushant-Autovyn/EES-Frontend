@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class Employee {
 
   apiUrl =
-    'http://localhost:5000/api/employees';
+    'https://ees-backend-production.up.railway.app/api/employees';
 
   constructor(
     private http: HttpClient

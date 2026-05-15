@@ -56,11 +56,12 @@
         <h2>Recent Attendance</h2>
         <table>
           <thead>
-            <tr><th>Employee</th><th>Status</th></tr>
+            <tr><th>Employee</th><th>Date</th><th>Status</th></tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of stats.recentAttendance">
               <td>{{ item.name }}</td>
+              <td>{{ item.check_in ? (item.check_in | date:'mediumDate') : '-' }}</td>
               <td><span class="status-tag" [class.present]="item.status==='Present'" [class.absent]="item.status==='Absent'">{{ item.status }}</span></td>
             </tr>
           </tbody>

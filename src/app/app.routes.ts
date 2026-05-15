@@ -30,6 +30,7 @@ import { BranchManagement } from './pages/branch-management/branch-management';
 import { MyDocuments } from './pages/my-documents/my-documents';
 import { MyComplaints } from './pages/my-complaints/my-complaints';
 import { ManageComplaints } from './pages/manage-complaints/manage-complaints';
+import { SendMessage } from './pages/send-message/send-message';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -63,4 +64,5 @@ export const routes: Routes = [
   { path: 'my-documents', component: MyDocuments, canActivate: [authGuard] },
   { path: 'my-complaints', component: MyComplaints, canActivate: [authGuard] },
   { path: 'manage-complaints', component: ManageComplaints, canActivate: [authGuard] },
+  { path: 'send-message', component: SendMessage, canActivate: [authGuard] },
 ];

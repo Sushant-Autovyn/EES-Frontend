@@ -31,9 +31,12 @@ export class Login {
 
   forgotMode = false;
   otpMode = false;
-  forgotEmail = '';
+  forgotPhone = '';
+  otpChannel: 'whatsapp' | 'sms' = 'whatsapp';
   otp = '';
   newPassword = '';
+  sendingOtp = false;
+  resetting = false;
 
   constructor(
     private auth: Auth,
@@ -47,7 +50,7 @@ login(){
   .subscribe((res:any)=>{
     localStorage.setItem('token', res.token);
     // Fetch and cache permissions before navigating
-    this.http.get<{ permissions: string[] }>('http://localhost:5000/api/roles/my-permissions', {
+    this.http.get<{ permissions: string[] }>('https://ees-backend-production.up.railway.app/api/roles/my-permissions', {
       headers: { Authorization: `Bearer ${res.token}` }
     }).subscribe({
       next: (permRes) => {
@@ -61,32 +64,61 @@ login(){
   });
 }
 
+openForgot(){
+  this.forgotMode = true;
+  this.otpMode = false;
+  this.forgotPhone = '';
+  this.otp = '';
+  this.newPassword = '';
+}
+
+closeForgot(){
+  this.forgotMode = false;
+  this.otpMode = false;
+}
+
 sendOtp(){
-  this.auth.forgotPassword(this.forgotEmail)
+  if (this.sendingOtp) return;
+  if (!this.forgotPhone) {
+    this.toast.warning('Please enter your phone number');
+    return;
+  }
+  this.sendingOtp = true;
+  this.auth.forgotPassword(this.forgotPhone, this.otpChannel)
   .subscribe({
     next: (res:any) => {
-      if (res.otp) {
-        this.toast.info('Email not configured. Your OTP is: ' + res.otp);
-      } else {
-        this.toast.success('OTP sent to your email');
-      }
       this.otpMode = true;
+      this.sendingOtp = false;
+      if (res.devMode && res.otp) {
+        this.toast.info((this.otpChannel === 'whatsapp' ? 'WhatsApp' : 'SMS') + ' not configured. Your OTP: ' + res.otp);
+      } else {
+        this.toast.success('OTP sent to your phone via ' + (this.otpChannel === 'whatsapp' ? 'WhatsApp' : 'SMS'));
+      }
     },
     error: (err:any) => {
+      this.sendingOtp = false;
       this.toast.error(err.error?.message || 'Failed to send OTP');
     }
   });
 }
 
 resetPassword(){
-  this.auth.resetPassword({email:this.forgotEmail, otp:this.otp, newPassword:this.newPassword})
+  if (this.resetting) return;
+  if (!this.otp || !this.newPassword) {
+    this.toast.warning('Enter OTP and new password');
+    return;
+  }
+  this.resetting = true;
+  this.auth.resetPassword({ phone: this.forgotPhone, otp: this.otp, newPassword: this.newPassword })
   .subscribe({
     next: (res:any) => {
-      this.toast.success('Password reset successful');
       this.forgotMode = false;
       this.otpMode = false;
+      this.resetting = false;
+      this.toast.success('Password reset successful');
     },
     error: (err:any) => {
+      this.resetting = false;
       this.toast.error(err.error?.message || 'Password reset failed');
     }
   });

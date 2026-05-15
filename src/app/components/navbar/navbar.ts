@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
 
@@ -20,7 +20,8 @@ export class Navbar implements OnInit {
 
   constructor(
     private router: Router,
-    private notifService: NotificationService
+    private notifService: NotificationService,
+    private cdr: ChangeDetectorRef
   ) {
     const token = localStorage.getItem('token');
     if (token) {
@@ -38,16 +39,17 @@ export class Navbar implements OnInit {
 
   loadUnreadCount() {
     this.notifService.getUnreadCount().subscribe({
-      next: (res) => this.unreadCount = res.count,
+      next: (res) => { this.unreadCount = res.count; this.cdr.detectChanges(); },
       error: () => {}
     });
   }
 
-  toggleNotifications() {
+  toggleNotifications(event?: Event) {
+    event?.stopPropagation();
     this.showNotifications = !this.showNotifications;
     if (this.showNotifications) {
       this.notifService.getNotifications().subscribe({
-        next: (res: any) => this.notifications = res,
+        next: (res: any) => { this.notifications = res; this.cdr.detectChanges(); },
         error: () => {}
       });
     }
@@ -59,6 +61,7 @@ export class Navbar implements OnInit {
         n.id === id ? { ...n, is_read: 1 } : n
       );
       this.unreadCount = Math.max(0, this.unreadCount - 1);
+      this.cdr.detectChanges();
     });
   }
 
@@ -66,10 +69,12 @@ export class Navbar implements OnInit {
     this.notifService.markAllAsRead().subscribe(() => {
       this.notifications = this.notifications.map(n => ({ ...n, is_read: 1 }));
       this.unreadCount = 0;
+      this.cdr.detectChanges();
     });
   }
 
-  toggleProfileMenu() {
+  toggleProfileMenu(event?: Event) {
+    event?.stopPropagation();
     this.showProfileMenu = !this.showProfileMenu;
   }
 

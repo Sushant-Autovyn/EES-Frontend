@@ -49,32 +49,93 @@
         <span class="btn-arrow"><i class="fas fa-arrow-right"></i></span>
       </button>
 
-      <p class="forgot-link" (click)="forgotMode=true">Forgot Password?</p>
+      <p class="forgot-link">
+        <a href="javascript:void(0)" (click)="openForgot()">Forgot Password?</a>
+      </p>
 
       <p class="register-link">Don't have an account? <a routerLink="/register">Create Account</a></p>
 
     </div>
+  </div>
 
-    <!-- Forgot Password Modal -->
-    <div class="forgot-box" *ngIf="forgotMode">
+  <!-- Forgot Password Modal -->
+  <div class="forgot-overlay" *ngIf="forgotMode" (click)="closeForgot()">
+    <div class="forgot-modal" (click)="$event.stopPropagation()">
+
+      <button type="button" class="forgot-close" (click)="closeForgot()">&times;</button>
+
       <h3>Reset Password</h3>
-      <div class="form-group" *ngIf="!otpMode">
-        <label>Email Address</label>
-        <input type="email" placeholder="Enter your email" [(ngModel)]="forgotEmail">
-        <button class="login-btn" (click)="sendOtp()">Send OTP</button>
+      <p class="forgot-sub">We'll send a 6-digit OTP to your phone.</p>
+
+      <!-- Step 1: Phone -->
+      <div *ngIf="!otpMode">
+        <div class="form-group">
+          <label for="forgotPhone">Phone Number</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fas fa-phone"></i></span>
+            <input
+              id="forgotPhone"
+              type="tel"
+              placeholder="e.g. 9876543210"
+              [(ngModel)]="forgotPhone"
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Send OTP via</label>
+          <div class="channel-options">
+            <label class="channel-option" [class.active]="otpChannel === 'whatsapp'">
+              <input type="radio" name="otpChannel" value="whatsapp" [(ngModel)]="otpChannel">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </label>
+            <label class="channel-option" [class.active]="otpChannel === 'sms'">
+              <input type="radio" name="otpChannel" value="sms" [(ngModel)]="otpChannel">
+              <i class="fas fa-sms"></i> SMS
+            </label>
+          </div>
+        </div>
+
+        <button type="button" class="login-btn" (click)="sendOtp()" [disabled]="sendingOtp">
+          {{ sendingOtp ? 'Sending...' : 'Send OTP' }}
+          <span class="btn-arrow"><i class="fas fa-paper-plane"></i></span>
+        </button>
       </div>
+
+      <!-- Step 2: OTP + new password -->
       <div *ngIf="otpMode">
         <div class="form-group">
-          <label>OTP</label>
-          <input type="text" placeholder="Enter OTP" [(ngModel)]="otp">
+          <label for="otp">Enter OTP</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fas fa-key"></i></span>
+            <input
+              id="otp"
+              type="text"
+              placeholder="6-digit code"
+              [(ngModel)]="otp"
+            >
+          </div>
         </div>
+
         <div class="form-group">
-          <label>New Password</label>
-          <input type="password" placeholder="New password" [(ngModel)]="newPassword">
+          <label for="newPassword">New Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fas fa-lock"></i></span>
+            <input
+              id="newPassword"
+              type="password"
+              placeholder="Enter new password"
+              [(ngModel)]="newPassword"
+            >
+          </div>
         </div>
-        <button class="login-btn" (click)="resetPassword()">Reset Password</button>
+
+        <button type="button" class="login-btn" (click)="resetPassword()" [disabled]="resetting">
+          {{ resetting ? 'Resetting...' : 'Reset Password' }}
+          <span class="btn-arrow"><i class="fas fa-check"></i></span>
+        </button>
       </div>
-      <p class="forgot-link" (click)="forgotMode=false;otpMode=false">Back to Login</p>
+
     </div>
   </div>
 

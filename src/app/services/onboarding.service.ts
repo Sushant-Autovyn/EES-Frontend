@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class OnboardingService {
-  apiUrl = 'http://localhost:5000/api/onboarding';
+  apiUrl = 'https://ees-backend-production.up.railway.app/api/onboarding';
 
   constructor(private http: HttpClient) {}
 

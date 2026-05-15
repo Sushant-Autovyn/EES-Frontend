@@ -58,7 +58,7 @@
         <p class="card-desc">{{ c.description }}</p>
 
         <div class="card-attachment" *ngIf="c.attachment">
-          <a [href]="'http://localhost:5000/uploads/' + c.attachment" target="_blank">
+          <a [href]="'https://ees-backend-production.up.railway.app/uploads/' + c.attachment" target="_blank">
             <i class="fas fa-paperclip"></i> View attachment
           </a>
         </div>

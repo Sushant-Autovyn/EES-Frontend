@@ -71,7 +71,7 @@ export class MyDocuments implements OnInit {
   }
 
   viewDoc(url: string) {
-    window.open('http://localhost:5000/uploads/' + url, '_blank');
+    window.open('https://ees-backend-production.up.railway.app/uploads/' + url, '_blank');
   }
 
   getStatusClass(status: string): string {

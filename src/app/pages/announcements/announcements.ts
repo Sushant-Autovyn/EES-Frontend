@@ -30,11 +30,16 @@ export class Announcements implements OnInit {
 
   submit() {
     if (!this.formData.title || !this.formData.message) { this.toast.error('Title and message are required'); return; }
-    this.announcementService.create(this.formData).subscribe((res: any) => {
-      this.toast.success(res.message);
-      this.showForm = false;
-      this.formData = { title: '', message: '', target_role: 'all', priority: 'Normal' };
-      this.load();
+    this.announcementService.create(this.formData).subscribe({
+      next: () => {
+        this.toast.success('Announcement sent successfully');
+        this.showForm = false;
+        this.formData = { title: '', message: '', target_role: 'all', priority: 'Normal' };
+        this.load();
+      },
+      error: (err: any) => {
+        this.toast.error(err.error?.message || 'Failed to send announcement');
+      }
     });
   }
 

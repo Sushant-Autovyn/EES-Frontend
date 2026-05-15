@@ -1,0 +1,141 @@
+<div class="send-message-page">
+
+  <div class="page-header">
+    <h2><i class="fas fa-paper-plane"></i> Send Custom Message</h2>
+    <p>Send a WhatsApp or SMS message to one or many numbers.</p>
+  </div>
+
+  <div class="send-card">
+
+    <!-- Recipients -->
+    <div class="form-group">
+      <div class="label-row">
+        <label>Recipients ({{ recipients.length }})</label>
+        <div class="label-actions">
+          <button type="button" class="link-btn" (click)="togglePicker()">
+            <i class="fas fa-users"></i> {{ showPicker ? 'Hide' : 'Pick from employees' }}
+          </button>
+          <button type="button" class="link-btn danger" *ngIf="recipients.length" (click)="clearAll()">
+            Clear all
+          </button>
+        </div>
+      </div>
+
+      <div class="chip-input" (click)="$any($event.target).querySelector ? null : null">
+        <span class="chip" *ngFor="let r of recipients">
+          {{ r }}
+          <button type="button" (click)="removeRecipient(r)" aria-label="Remove">&times;</button>
+        </span>
+        <input
+          type="text"
+          class="chip-input-field"
+          [placeholder]="recipients.length ? 'Add another...' : 'Type a number then press Enter or comma'"
+          [(ngModel)]="phoneInput"
+          (keydown)="onPhoneKey($event)"
+          (blur)="addPhone()"
+        >
+      </div>
+      <small>10-digit numbers get +91 prefix automatically. Paste a list separated by commas, spaces or new lines.</small>
+    </div>
+
+    <!-- Employee picker -->
+    <div class="employee-picker" *ngIf="showPicker">
+      <div class="picker-header">
+        <input
+          type="text"
+          class="form-input"
+          placeholder="Search employees by name, phone or email..."
+          [(ngModel)]="employeeSearch"
+          (ngModelChange)="filterEmployees()"
+        >
+        <button type="button" class="link-btn" (click)="selectAllVisible()">
+          Select all visible
+        </button>
+      </div>
+
+      <div class="picker-list" *ngIf="filteredEmployees.length; else noEmps">
+        <div
+          class="picker-row"
+          *ngFor="let emp of filteredEmployees"
+          [class.selected]="isSelected(emp)"
+          (click)="toggleEmployee(emp)"
+        >
+          <div class="picker-check">
+            <i class="fas" [class.fa-check-square]="isSelected(emp)" [class.fa-square]="!isSelected(emp)"></i>
+          </div>
+          <div class="picker-info">
+            <div class="picker-name">{{ emp.name }}</div>
+            <div class="picker-meta">{{ emp.phone }}<span *ngIf="emp.department"> • {{ emp.department }}</span></div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noEmps>
+        <div class="empty-state">No employees with a phone number match.</div>
+      </ng-template>
+    </div>
+
+    <!-- Channel -->
+    <div class="form-group">
+      <label>Channel</label>
+      <div class="channel-options">
+        <label class="channel-option" [class.active]="channel === 'whatsapp'">
+          <input type="radio" name="channel" value="whatsapp" [(ngModel)]="channel">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </label>
+        <label class="channel-option" [class.active]="channel === 'sms'">
+          <input type="radio" name="channel" value="sms" [(ngModel)]="channel">
+          <i class="fas fa-sms"></i> SMS
+        </label>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea
+        id="message"
+        class="form-input"
+        rows="6"
+        placeholder="Type your message here..."
+        [(ngModel)]="message"
+      ></textarea>
+      <small>{{ message.length }} characters</small>
+    </div>
+
+    <button
+      type="button"
+      class="send-btn"
+      (click)="send()"
+      [disabled]="sending"
+    >
+      <i class="fas fa-paper-plane"></i>
+      {{ sending ? 'Sending...' : 'Send to ' + recipients.length + ' recipient(s)' }}
+    </button>
+
+    <!-- Result -->
+    <div class="result" *ngIf="lastResult">
+      <div class="result-summary">
+        <span class="badge ok">{{ lastResult.sent }} sent</span>
+        <span class="badge fail" *ngIf="lastResult.failed">{{ lastResult.failed }} failed</span>
+        <span class="muted">via {{ lastResult.channel }}</span>
+      </div>
+      <details *ngIf="lastResult.results?.length">
+        <summary>Per-recipient details</summary>
+        <ul class="result-list">
+          <li *ngFor="let r of lastResult.results" [class.failed]="!r.success">
+            <i class="fas" [class.fa-check-circle]="r.success" [class.fa-times-circle]="!r.success"></i>
+            <span class="r-phone">{{ r.phone }}</span>
+            <span class="r-detail">{{ r.success ? r.status : r.error }}</span>
+          </li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="note">
+      <strong>Note:</strong> On a Twilio trial, the recipient must have joined the
+      WhatsApp sandbox (for WhatsApp) or be a verified caller ID (for SMS).
+    </div>
+
+  </div>
+
+</div>
