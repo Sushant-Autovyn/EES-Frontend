@@ -87,8 +87,8 @@
             </td>
           </tr>
           <tr *ngFor="let c of filtered; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>
+            <td data-label="#">{{ i + 1 }}</td>
+            <td class="emp-cell-td">
               <div class="emp-cell">
                 <div class="emp-avatar">{{ (c.employee_name || '?').charAt(0) }}</div>
                 <div>
@@ -97,15 +97,15 @@
                 </div>
               </div>
             </td>
-            <td class="subject-cell" (click)="openDetails(c)">{{ c.subject }}</td>
-            <td>
+            <td data-label="Subject" class="subject-cell" (click)="openDetails(c)">{{ c.subject }}</td>
+            <td data-label="Category">
               <span class="cat-pill">
                 <i class="fas" [class]="iconForCategory(c.category)"></i> {{ c.category }}
               </span>
             </td>
-            <td><span class="badge" [ngClass]="statusClass(c.status)">{{ c.status }}</span></td>
-            <td>{{ c.created_at | date:'mediumDate' }}</td>
-            <td class="actions">
+            <td data-label="Status"><span class="badge" [ngClass]="statusClass(c.status)">{{ c.status }}</span></td>
+            <td data-label="Submitted">{{ c.created_at | date:'mediumDate' }}</td>
+            <td data-label="Actions" class="actions">
               <button class="view-btn" (click)="openDetails(c)" title="View / Respond">
                 <i class="fas fa-eye"></i>
               </button>
